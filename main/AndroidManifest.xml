@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ca.easyevent" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".EvenementsActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".EvenementActivity"
+            android:label="@string/title_activity_evenement" >
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
+        <activity
+            android:name=".activity.FormParticipantActivity"
+            android:label="@string/title_activity_form_participant" >
+        </activity>
+        <activity
+            android:name=".activity.FormDepenseActivity"
+            android:label="@string/title_activity_form_depense" >
+        </activity>
+        <activity
+            android:name=".activity.DepenseActivity"
+            android:label="@string/title_activity_depense" >
+        </activity>
+        <activity
+            android:name=".activity.ParticipantsActivity"
+            android:label="@string/title_activity_participants" >
+        </activity>
+        <activity
+            android:name=".activity.SendResumeActivity"
+            android:label="@string/title_activity_send_resume" >
+        </activity>
+        <activity
+            android:name=".activity.FormEvenementActivity"
+            android:label="@string/title_activity_form_evenement" >
+        </activity>
+    </application>
+
+</manifest>

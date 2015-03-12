@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">EasyEvent</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_evenement">EvenementActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_form_participant">FormParticipantActivity</string>
+    <string name="title_activity_form_depense">FormDepenseActivity</string>
+    <string name="title_activity_depense">DepenseActivity</string>
+    <string name="title_activity_participants">ParticipantsActivity</string>
+    <string name="title_activity_send_resume">SendResumeActivity</string>
+    <string name="title_activity_form_evenement">FormEvenementActivity</string>
+
+</resources>
