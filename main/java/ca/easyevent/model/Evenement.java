@@ -1,12 +1,12 @@
 package ca.easyevent.model;
 
-import com.cevex.easyevent.util.DateModifiable;
 
 import java.util.ArrayList;
 
+import ca.easyevent.utils.DateModifiable;
 
 
-public class Evenement 
+public class Evenement
 {
 	/*##############################################################################################
 									ATTRIBUTS

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="menu_bg" type="color">#663FFB</item>
+    <item name="menu_text" type="color">#FFFFFF</item>
+    <item name="tile_bg_blue" type="color">#326ED3</item>
+
+    <integer-array name="androidcolors">
+        <item>@color/menu_bg</item>
+        <item>@color/menu_text</item>
+        <item>@color/tile_bg_blue</item>
+    </integer-array>
+
+</resources> 
