@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:id="@+id/item_student"
+
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp"
+
+    tools:context=".ParticipantsActivity"
+>
+
+    <!-- The avatar -->
+    <ImageView
+        android:id="@+id/contactImageView"
+        android:src="@drawable/contacts"
+        android:background="@color/primary_cyan"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+
+        android:scaleType="centerCrop" />
+
+
+    <!-- The 2-row textual layout -->
+    <LinearLayout
+        android:layout_toRightOf="@+id/contactImageView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:layout_centerVertical="true">
+
+        <!-- First row -->
+        <TextView
+            android:id="@+id/nameParticipantText"
+
+            android:text="Louis"
+            android:textSize="16sp"
+            android:textColor="#181818"
+
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            />
+
+        <!-- Second row -->
+        <TextView
+            android:id="@+id/balanceParticipantText"
+
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="bold"
+
+            android:text="+ 200 €"
+            android:textSize="14sp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

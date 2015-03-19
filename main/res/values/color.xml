@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="menu_bg" type="color">#663FFB</item>
-    <item name="menu_text" type="color">#FFFFFF</item>
-    <item name="tile_bg_blue" type="color">#326ED3</item>
 
-    <integer-array name="androidcolors">
-        <item>@color/menu_bg</item>
-        <item>@color/menu_text</item>
-        <item>@color/tile_bg_blue</item>
+        <!-- Primary color -->
+    <item name="primary_pink" type="color">#E91E63</item>
+    <item name="primary_purple" type="color">#9C27B0</item>
+    <item name="primary_indigo" type="color">#3F51B5</item>
+    <item name="primary_cyan" type="color">#00BCD4</item>
+    <item name="primary_green" type="color">#4CAF50</item>
+    <item name="primary_deep_orange" type="color">#FF5722</item>
+    <item name="primary_blue_grey" type="color">#607D8B</item>
+
+            <!-- Main color -->
+    <item name="main_regular" type="color">#3F51B5</item>
+    <item name="main_light" type="color">#C5CAE9</item>
+    <item name="main_dark" type="color">#303F9F</item>
+
+            <!-- Accent color -->
+    <item name="accent_regular" type="color">#FF4081</item>
+    <item name="accent_light" type="color">#FF80AB</item>
+    <item name="accent_dark" type="color">#F50057</item>
+
+            <!-- Text color -->
+    <item name="text_regular" type="color">#9E9E9E</item>
+    <item name="text_light" type="color">#E0E0E0</item>
+    <item name="text_dark" type="color">#212121</item>
+
+
+            <!-- Primary color Array-->
+    <integer-array name="primary_color">
+        <item>@color/primary_pink</item>
+        <item>@color/primary_purple</item>
+        <item>@color/primary_indigo</item>
+        <item>@color/primary_cyan</item>
+        <item>@color/primary_green</item>
+        <item>@color/primary_deep_orange</item>
+        <item>@color/primary_blue_grey</item>
     </integer-array>
 
 </resources> 

@@ -1,5 +1,8 @@
 package ca.easyevent.utils;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -18,7 +21,7 @@ import java.util.StringTokenizer;
  * @author Equipe PB8 2014
  * @version 1.0
  */
-public class DateModifiable {
+public class DateModifiable implements Parcelable {
 
 	private GregorianCalendar c = new GregorianCalendar();
 
@@ -46,33 +49,56 @@ public class DateModifiable {
 				date.getHeure(), date.getMinute(), date.getSeconde());
 	}
 
-	/**
-	 * <b>Constructeur de DateModifiable.</b>
-	 * <p>
-	 * A la construction de la l'objet DateModifiable ,on inialise la date avec
-	 * la date courante du systéme
-	 * </p>
-	 * 
-	 * @param jour
-	 *            - Inialisation du jour du Calendrier
-	 * @param mois
-	 *            - Inialisation du mois du Calendrier
-	 * @param annee
-	 *            - Inialisation du annee du Calendrier
-	 * @param heure
-	 *            - Inialisation de l'heure de l'horloge
-	 * @param minute
-	 *            - Inialisation des minutes de l'horloge
-	 * @param seconde
-	 *            - Inialisation des secondes de l'horloge
-	 * 
-	 */
-	public DateModifiable(int jour, int mois, int annee, int heure, int minute,
-			int seconde) {
-		c.set(annee, mois - 1, jour, heure, minute, seconde);
-	}
+	    /**
+     * <b>Constructeur de DateModifiable.</b>
+     * <p>
+     * A la construction de la l'objet DateModifiable ,on inialise la date avec
+     * la date courante du systéme
+     * </p>
+     *
+     * @param jour
+     *            - Inialisation du jour du Calendrier
+     * @param mois
+     *            - Inialisation du mois du Calendrier
+     * @param annee
+     *            - Inialisation du annee du Calendrier
+     * @param heure
+     *            - Inialisation de l'heure de l'horloge
+     * @param minute
+     *            - Inialisation des minutes de l'horloge
+     * @param seconde
+     *            - Inialisation des secondes de l'horloge
+     *
+     */
+    public DateModifiable(int jour, int mois, int annee, int heure, int minute, int seconde) {
+        c.set(annee, mois - 1, jour, heure, minute, seconde);
+    }
 
-	// ##############################################################################################
+    /**
+     * <b>Constructeur de DateModifiable.</b>
+     * <p>
+     * A la construction de la l'objet DateModifiable ,on inialise la date avec
+     * la date courante du systéme
+     * </p>
+     *
+     * @param date
+     *            - Date sous la forme d'un string au format "JJ/MM/AAAA"
+     *
+     */
+    public DateModifiable(String date) {
+        int jour = Integer.valueOf(date.substring(0,2)),
+                mois = Integer.valueOf(date.substring(3,5)),
+                annee = Integer.valueOf(date.substring(6,10));
+        c.set(annee, mois - 1, jour,0,0,0);
+    }
+
+    public DateModifiable(Parcel source){
+        if(source.dataSize()>0){
+            c.set(source.readInt(),source.readInt()+1,source.readInt(),
+                    source.readInt(),source.readInt(),source.readInt());
+        }
+    }
+    // ##############################################################################################
 	// 									Incremente Seconde
 	// ##############################################################################################
 	
@@ -390,4 +416,37 @@ public class DateModifiable {
 	{
 		 c.set(Calendar.SECOND, value);
 	}
+
+
+                /* ###################################
+                         COMPORTEMENT PARCEABLE
+                #####################################*/
+
+    public final static Creator<DateModifiable> CREATOR =
+            new Creator<DateModifiable>()
+            {
+                public DateModifiable createFromParcel(Parcel in) {
+                    return new DateModifiable(in);
+                }
+
+                public DateModifiable[] newArray(int size) {
+                    return new DateModifiable[size];
+                }
+            };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.getJourDuMois());
+        dest.writeInt(this.getMois());
+        dest.writeInt(this.getAnnee());
+        dest.writeInt(this.getHeure());
+        dest.writeInt(this.getMinute());
+        dest.writeInt(this.getSeconde());
+    }
+
 }

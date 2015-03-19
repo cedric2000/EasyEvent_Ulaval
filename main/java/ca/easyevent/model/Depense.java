@@ -1,19 +1,22 @@
 package ca.easyevent.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 import ca.easyevent.utils.DateModifiable;
 
-public class Depense
+public class Depense implements Parcelable
 {
 	/*##############################################################################################
 									ATTRIBUTS
 	###############################################################################################*/
 	
 	private String libelle = new String("");
+    private double montantTotal =0;
+
 	private DateModifiable date;
-	
-	private double montantTotal =0;
 	private ArrayList<Participation> listeParticipation = new ArrayList<Participation>();
 
 	
@@ -35,6 +38,17 @@ public class Depense
 		this.date = date;
 		this.listeParticipation = listeParticipation;
 	}
+
+
+    public Depense(Parcel source){
+        if(source.dataSize()>0){
+            this.libelle = source.readString();
+            this.montantTotal = source.readDouble();
+            this.date = source.readParcelable(DateModifiable.class.getClassLoader());
+            source.readList(this.listeParticipation, Participation.class.getClassLoader());
+        }
+    }
+
 	
 	/*##############################################################################################
 										AJOUT
@@ -81,24 +95,60 @@ public class Depense
 		return listeParticipation;
 	}
 
-	@Override
-	public String toString() {
-		return "Depense [libelle=" + libelle + ", date=" + date + ", montantTotal=" + montantTotal + "]";
-	}
-	
+
 	/*################################################################################################
 									MODIFICATEUR 
 	##################################################################################################*/
 
-	
-	
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
+    public void setDate(DateModifiable date) {
+        this.date = date;
+    }
+
+    public void setMontantTotal(double montantTotal) {
+        this.montantTotal = montantTotal;
+    }
+
 	/*##############################################################################################
 									DESCRIPTEUR 
 	##############################################################################################*/
-	
-	
-	
 
-	
-	
+    @Override
+    public String toString() {
+        return "Depense [libelle=" + libelle + ", date=" + date + ", montantTotal=" + montantTotal + "]";
+    }
+
+
+	/*################################################################################################
+								COMPORTEMENT PARCELABLE
+	##################################################################################################*/
+
+    public final static Creator<Depense> CREATOR =
+            new Creator<Depense>()
+            {
+                public Depense createFromParcel(Parcel in) {
+                    return new Depense(in);
+                }
+
+                public Depense[] newArray(int size) {
+                    return new Depense[size];
+                }
+            };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.libelle);
+        dest.writeDouble(this.montantTotal);
+        dest.writeParcelable(this.date, flags);
+        dest.writeList(this.listeParticipation);
+    }
+
 }

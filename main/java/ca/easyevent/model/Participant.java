@@ -1,9 +1,12 @@
 package ca.easyevent.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 
-public class Participant {
+public class Participant implements Parcelable{
 
 
 	/*##############################################################################################
@@ -17,7 +20,7 @@ public class Participant {
 	private float BudgetPersoTotal = 0;
 	private float equilibrePersoTotal = 0;
 	
-	private ArrayList<Participation> listeParticipation = new ArrayList<Participation>();
+	private ArrayList<Participation> listeParticipation = new ArrayList<>();
 	
 
 	/*##############################################################################################
@@ -35,7 +38,17 @@ public class Participant {
 		this.telephone = telephone;
 		this.mail = mail;
 	}
-	
+
+    public Participant(Parcel source){
+        if(source.dataSize()>0){
+            this.nom = source.readString();
+            this.telephone = source.readString();
+            this.mail = source.readString();
+            source.readList(this.listeParticipation, Participation.class.getClassLoader());
+        }
+    }
+
+
 	/*##############################################################################################
 									AJOUT PARTICIPATION
 	###############################################################################################*/
@@ -95,14 +108,24 @@ public class Participant {
 		return equilibrePersoTotal;
 	}
 
-
-	
 	/*##############################################################################################
 									MODIFICATEUR 
 	##############################################################################################*/
-	
-	
-	
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+
+
 	/*##############################################################################################
 									DESCRIPTEUR 
 	##############################################################################################*/
@@ -113,6 +136,35 @@ public class Participant {
 				+ ", mail=" + mail + ", BudgetPersoTotal=" + BudgetPersoTotal
 				+ ", equilibrePersoTotal=" + equilibrePersoTotal + "]";
 	}
-	
+
+	/*################################################################################################
+								COMPORTEMENT PARCELABLE
+	##################################################################################################*/
+
+
+    public final static Creator<Participant> CREATOR =
+            new Creator<Participant>()
+            {
+                public Participant createFromParcel(Parcel in) {
+                    return new Participant(in);
+                }
+
+                public Participant[] newArray(int size) {
+                    return new Participant[size];
+                }
+            };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.nom);
+        dest.writeString(this.mail);
+        dest.writeString(this.telephone);
+        dest.writeList(this.listeParticipation);
+    }
 
 }

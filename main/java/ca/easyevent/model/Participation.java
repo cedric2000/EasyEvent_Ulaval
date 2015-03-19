@@ -1,9 +1,10 @@
 package ca.easyevent.model;
 
 
-public class Participation {
+import android.os.Parcel;
+import android.os.Parcelable;
 
-
+public class Participation implements Parcelable{
 
 	/*##############################################################################################
 									ATTRIBUTS
@@ -20,10 +21,10 @@ public class Participation {
 	/*##############################################################################################
 									CONSTRUCTEUR
 	###############################################################################################*/
-	
+
 	public Participation(){}
-	
-	
+
+
 	public Participation(Participant participant, Depense depense, double montant,double tauxParticipation){
 		this.participant = participant;
 		this.depense = depense;
@@ -31,6 +32,16 @@ public class Participation {
 		this.tauxParticipation =tauxParticipation;
 		calculEquilibre();
 	}
+
+    public Participation(Parcel source){
+        if(source.dataSize()>0){
+            this.participant = source.readParcelable(Participant.class.getClassLoader());
+            this.depense = source.readParcelable(Depense.class.getClassLoader());
+            this.montant = source.readDouble();
+            this.tauxParticipation = source.readDouble();
+        }
+    }
+
 
 
 	/*##############################################################################################
@@ -67,14 +78,39 @@ public class Participation {
 		return equilibre;
 	}
 
-
-
 	/*##############################################################################################
 									MODIFICATEUR
 	###############################################################################################*/
 
-	public void setDepense(Depense newDepense) {
-		// TODO Auto-generated method stub
-		
-	}
+
+
+	/*################################################################################################
+								COMPORTEMENT PARCELABLE
+	##################################################################################################*/
+
+
+    public final static Creator<Participation> CREATOR =
+            new Creator<Participation>()
+            {
+                public Participation createFromParcel(Parcel in) {
+                    return new Participation(in);
+                }
+
+                public Participation[] newArray(int size) {
+                    return new Participation[size];
+                }
+            };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(this.participant, flags);
+        dest.writeParcelable(this.depense, flags);
+        dest.writeDouble(this.montant);
+        dest.writeDouble(this.tauxParticipation);
+    }
 }
