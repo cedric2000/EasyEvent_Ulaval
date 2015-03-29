@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/card_background"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp">
+
+    <ImageView
+        android:id="@+id/eventImageView"
+        android:src="@drawable/road"
+
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/nameEventText"
+
+        android:text="Road Trip USA"
+        android:textSize="22sp"
+        android:textColor="@color/text_dark"
+        android:background="@android:color/white"
+        android:fontFamily="sans-serif"
+        android:textStyle="normal"
+        android:layout_marginLeft="16dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eventImageView"
+        android:layout_marginTop="16dp"
+        />
+
+    <TextView
+        android:id="@+id/dateEventText"
+
+        android:text="12/05/15"
+        android:textSize="16sp"
+        android:textColor="@color/text_regular"
+        android:background="@android:color/white"
+        android:fontFamily="sans-serif"
+        android:textStyle="normal"
+        android:layout_marginLeft="16dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nameEventText"
+     />
+
+    <TextView
+        android:id="@+id/placeEventText"
+
+        android:background="@android:color/white"
+        android:text="Boston"
+        android:textSize="16sp"
+        android:textColor="@color/text_regular"
+
+        android:fontFamily="sans-serif"
+        android:textStyle="normal"
+
+        android:layout_marginLeft="16dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateEventText"
+    />
+
+    <View
+        android:id="@+id/lineTextButton"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/placeEventText"
+        android:background="@color/text_light"
+        android:layout_marginTop="16dp"/>
+
+
+    <TextView
+        android:id="@+id/goToEvenement"
+        android:background="@android:color/white"
+
+        android:text="VOIR"
+        android:textSize="14sp"
+        android:textColor="@color/text_dark"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lineTextButton"
+
+        android:gravity="end"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:paddingBottom="16dp"/>
+
+
+</RelativeLayout>

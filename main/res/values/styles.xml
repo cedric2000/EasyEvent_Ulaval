@@ -13,21 +13,16 @@
     </style>
 
     <!-- general styles for the action bar -->
-    <style name="MyActionBar"
-        parent="@style/Widget.AppCompat.ActionBar">
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:titleTextStyle">@style/TitleTextStyle</item>
         <item name="android:background">@color/main_regular</item>
-        <item name="android:backgroundStacked">@color/main_regular</item>
-        <item name="android:backgroundSplit">@color/main_regular</item>
 
         <!-- Support library compatibility -->
         <item name="titleTextStyle">@style/TitleTextStyle</item>
         <item name="background">@color/main_regular</item>
-        <item name="backgroundStacked">@color/main_regular</item>
-        <item name="backgroundSplit">@color/main_regular</item>
-    </style>
+</style>
 
-    <!-- action bar title text -->
+<!-- action bar title text -->
     <style name="TitleTextStyle"
         parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/text_light</item>

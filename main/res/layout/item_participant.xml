@@ -16,23 +16,39 @@
 >
 
     <!-- The avatar -->
-    <ImageView
-        android:id="@+id/contactImageView"
-        android:src="@drawable/contacts"
-        android:background="@color/primary_cyan"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_centerVertical="true"
+    <LinearLayout
+        android:id="@+id/contactLayout"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/round_button"
+        android:layout_centerVertical="true">
 
-        android:scaleType="centerCrop" />
+        <ImageView
+            android:id="@+id/contactImageView"
+            android:src="@drawable/contacts"
+            android:tint="@android:color/white"
+
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+
+            android:layout_gravity="center"
+            android:layout_marginLeft="9dp"
+
+            android:scaleType="centerCrop" />
+    </LinearLayout>
 
 
     <!-- The 2-row textual layout -->
     <LinearLayout
-        android:layout_toRightOf="@+id/contactImageView"
+        android:id="@+id/textLayout"
+
+        android:layout_toRightOf="@+id/contactLayout"
+
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+
         android:orientation="horizontal"
+
         android:paddingLeft="16dp"
         android:layout_centerVertical="true">
 
@@ -48,8 +64,9 @@
             android:textStyle="bold"
 
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:layout_weight="0.5"
             />
 
         <!-- Second row -->
@@ -62,10 +79,27 @@
             android:text="+ 200 €"
             android:textSize="14sp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
             android:layout_weight="0.75" />
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1" >
 
+            <ImageView
+                android:id="@+id/goToParticipantIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:src="@drawable/arrow_right"
+                android:tint="@color/text_regular"
+             />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

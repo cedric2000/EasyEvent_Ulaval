@@ -44,7 +44,7 @@ public class Participant implements Parcelable{
             this.nom = source.readString();
             this.telephone = source.readString();
             this.mail = source.readString();
-            source.readList(this.listeParticipation, Participation.class.getClassLoader());
+            source.readTypedList(this.listeParticipation, Participation.CREATOR);
         }
     }
 
@@ -164,7 +164,6 @@ public class Participant implements Parcelable{
         dest.writeString(this.nom);
         dest.writeString(this.mail);
         dest.writeString(this.telephone);
-        dest.writeList(this.listeParticipation);
+        dest.writeTypedList(listeParticipation);
     }
-
 }

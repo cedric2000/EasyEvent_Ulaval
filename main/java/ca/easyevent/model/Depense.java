@@ -17,7 +17,7 @@ public class Depense implements Parcelable
     private double montantTotal =0;
 
 	private DateModifiable date;
-	private ArrayList<Participation> listeParticipation = new ArrayList<Participation>();
+	private ArrayList<Participation> listeParticipation = new ArrayList<>();
 
 	
 	/*##############################################################################################
@@ -45,7 +45,7 @@ public class Depense implements Parcelable
             this.libelle = source.readString();
             this.montantTotal = source.readDouble();
             this.date = source.readParcelable(DateModifiable.class.getClassLoader());
-            source.readList(this.listeParticipation, Participation.class.getClassLoader());
+            this.listeParticipation = new ArrayList<>();
         }
     }
 
@@ -94,7 +94,6 @@ public class Depense implements Parcelable
 	public ArrayList<Participation> getListeParticipation() {
 		return listeParticipation;
 	}
-
 
 	/*################################################################################################
 									MODIFICATEUR 
@@ -148,7 +147,6 @@ public class Depense implements Parcelable
         dest.writeString(this.libelle);
         dest.writeDouble(this.montantTotal);
         dest.writeParcelable(this.date, flags);
-        dest.writeList(this.listeParticipation);
     }
 
 }

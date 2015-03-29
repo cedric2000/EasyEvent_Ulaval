@@ -1,7 +1,7 @@
 package ca.easyevent.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -9,25 +9,27 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import ca.easyevent.R;
-import ca.easyevent.adapter.ParticipantAdapter;
-import ca.easyevent.adapter.ParticipantAdapterListener;
+import ca.easyevent.adapter.DepenseAdapter;
+import ca.easyevent.adapter.DepenseAdapterListener;
+import ca.easyevent.model.Depense;
 import ca.easyevent.model.Evenement;
-import ca.easyevent.model.Participant;
 
-public class ParticipantsActivity extends Activity implements ParticipantAdapterListener{
+public class DepensesActivity extends ActionBarActivity implements DepenseAdapterListener{
+
+    ArrayList<Depense> listDepense;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_participants);
+        setContentView(R.layout.activity_depenses);
 
         Evenement evenement = getIntent().getParcelableExtra("EVENEMENT");
-        ArrayList<Participant> listParticipant = evenement.getListeParticipant();
+        listDepense = evenement.getListDepense();
 
-        ParticipantAdapter adapter = new ParticipantAdapter(listParticipant, this);
+        DepenseAdapter adapter = new DepenseAdapter(listDepense, this);
         adapter.addListener(this);
 
-        ListView list = (ListView)findViewById(R.id.listParticipant);
+        ListView list = (ListView)findViewById(R.id.listDepense);
         list.setAdapter(adapter);
     }
 
@@ -47,9 +49,8 @@ public class ParticipantsActivity extends Activity implements ParticipantAdapter
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
-    public void onClicParticipant(Participant item, int position) {
+    public void onClickDepense(Depense item, int position) {
 
     }
 }

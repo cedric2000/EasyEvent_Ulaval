@@ -41,8 +41,24 @@ public class Evenement implements Parcelable
             this.lieu   = source.readString();
             this.dateDebut = source.readParcelable(DateModifiable.class.getClassLoader());
             this.dateFin    = source.readParcelable(DateModifiable.class.getClassLoader());
-            source.readList(this.listDepense, Depense.class.getClassLoader());
-            source.readList(this.listeParticipant, Participant.class.getClassLoader());
+            source.readTypedList(this.listeParticipant, Participant.CREATOR);
+
+                //Création des dépendances
+            int numDepense =0;
+            for (Participant participant : this.listeParticipant){
+                numDepense =0;
+                for (Participation participation :participant.getListeParticipation()){
+                    participation.setParticipant(participant);
+                    if(this.listDepense.size()<participant.getListeParticipation().size()) {
+                        participation.getDepense().addParticipation(participation);
+                        this.listDepense.add(participation.getDepense());
+                    }
+                    else{
+                        this.listDepense.get(numDepense).addParticipation(participation);
+                    }
+                    numDepense ++;
+                }
+            }
         }
     }
 	/*##############################################################################################
@@ -67,8 +83,16 @@ public class Evenement implements Parcelable
 
 	public void ajouterParticipation(String nomParticipant, String libelleDepense, double montant, double tauxParticipation )
 	{
-		Participant participant = this.listeParticipant.get(this.listeParticipant.indexOf(nomParticipant));
-		Depense depense 		= this.listDepense.get(this.listDepense.indexOf(libelleDepense));
+        Participant participant = new Participant();
+        for (Participant participantCourant :this.listeParticipant) {
+            if(participantCourant.getName().equals(nomParticipant))
+                participant = this.listeParticipant.get(this.listeParticipant.indexOf(participantCourant));
+        }
+        Depense depense= new Depense();
+        for (Depense depenseCourant :this.listDepense) {
+            if(depenseCourant.getLibelle().equals(libelleDepense))
+                depense = this.listDepense.get(this.listDepense.indexOf(depenseCourant));
+        }
 		
 		Participation participation = new Participation(participant, depense, montant, tauxParticipation);
 		participant.addParticipation(participation);
@@ -111,6 +135,7 @@ public class Evenement implements Parcelable
         return listeParticipant;
     }
 
+
     /*################################################################################################
 								MODIFICATEUR
 	##################################################################################################*/
@@ -139,8 +164,19 @@ public class Evenement implements Parcelable
         this.listDepense = listDepense;
     }
 
+    @Override
+    public String toString() {
+        return "Evenement{" +
+                "titre='" + titre + '\'' +
+                ", lieu='" + lieu + '\'' +
+                ", dateDebut=" + dateDebut +
+                ", dateFin=" + dateFin +
+                ", listDepense=" + listDepense +
+                ", listeParticipant=" + listeParticipant +
+                '}';
+    }
 
-	/*################################################################################################
+    /*################################################################################################
 								COMPORTEMENT PARCELABLE
 	##################################################################################################*/
 
@@ -167,8 +203,7 @@ public class Evenement implements Parcelable
         dest.writeString(this.lieu);
         dest.writeParcelable(this.dateDebut, flags);
         dest.writeParcelable(this.dateFin, flags);
-        dest.writeList(this.listDepense);
-        dest.writeList(this.listeParticipant);
+        dest.writeTypedList(this.listeParticipant);
     }
 
 }

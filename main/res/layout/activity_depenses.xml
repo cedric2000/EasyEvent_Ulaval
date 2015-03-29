@@ -1,10 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#FFFFFF"
-    tools:context="ca.easyevent.activity.ParticipantsActivity">
-
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ca.easyevent.activity.DepensesActivity">
 
     <LinearLayout
         android:id="@+id/toolBar"
@@ -12,14 +10,14 @@
         android:background="@color/main_regular"
         android:layout_width="fill_parent"
         android:layout_height="56dp"
-       >
+        >
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/titleParticipantText"
+        android:id="@+id/titleDepenseText"
 
-        android:text="Participants"
+        android:text="Depenses"
         android:textSize="24sp"
         android:textColor="#FFFFFF"
         android:textStyle="normal"
@@ -34,35 +32,35 @@
         />
 
     <TextView
-        android:id="@+id/subTitleParticipantText"
+        android:id="@+id/subTitleDepenseText"
         android:background="#FFFFFF"
         android:layout_width="fill_parent"
         android:layout_height="48dp"
-        android:layout_below="@+id/titleParticipantText"
+        android:layout_below="@+id/titleDepenseText"
         />
 
     <View
         android:id="@+id/lineTitle"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/subTitleParticipantText"
+        android:layout_below="@+id/subTitleDepenseText"
         android:background="@color/text_light" />
 
     <ListView
-        android:id="@+id/listParticipant"
+        android:id="@+id/listDepense"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:divider="@color/text_light"
         android:dividerHeight="1dip"
         android:background="#FFFFFF"
-        android:layout_below="@+id/lineTitle">
+        android:layout_below="@+id/lineTitle" >
     </ListView>
 
     <LinearLayout
         android:layout_width="48dp"
         android:layout_height="48dp"
 
-        android:layout_alignBottom="@id/titleParticipantText"
+        android:layout_alignBottom="@id/titleDepenseText"
 
         android:layout_marginBottom="-25dp"
         android:layout_marginLeft="16dp"

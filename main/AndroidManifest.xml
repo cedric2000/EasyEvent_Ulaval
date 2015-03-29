@@ -30,7 +30,7 @@
             android:label="@string/title_activity_form_depense" >
         </activity>
         <activity
-            android:name=".activity.DepenseActivity"
+            android:name=".activity.DepensesActivity"
             android:label="@string/title_activity_depense" >
         </activity>
         <activity

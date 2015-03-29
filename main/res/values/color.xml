@@ -26,6 +26,13 @@
     <item name="text_dark" type="color">#212121</item>
 
 
+    <item name="transparent" type="color">#00000000</item>
+    <!-- card colors -->
+    <item name="card_backgr" type="color">#ffffff</item>
+    <item name="card_shadow_1" type="color">#d4d4d4</item>
+    <item name="card_shadow_2" type="color">#dddddd</item>
+    <item name="card_detailing" type="color">#eee</item>
+
             <!-- Primary color Array-->
     <integer-array name="primary_color">
         <item>@color/primary_pink</item>

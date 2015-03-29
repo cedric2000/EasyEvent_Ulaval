@@ -113,13 +113,13 @@ public class DataLists {
         double currentNumber = number;
         for(int i=0; i<nbDecomposition-1;i++) {
             Random rand = new Random();
-            if (rand.nextBoolean() == true)
-                list.add(0.0);
-            else {
+            //if (rand.nextBoolean() == true)
+            //    list.add(0.0);
+            //else {
                 double newNumber = rand.nextDouble() * currentNumber;
                 list.add(newNumber);
                 currentNumber -= newNumber;
-            }
+            //}
         }
         list.add(currentNumber);
         return list;

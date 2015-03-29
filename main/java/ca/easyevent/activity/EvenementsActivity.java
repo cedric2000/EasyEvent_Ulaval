@@ -5,20 +5,18 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
 import ca.easyevent.R;
+import ca.easyevent.adapter.EvenementAdapter;
+import ca.easyevent.adapter.EvenementAdapterListener;
 import ca.easyevent.model.Evenement;
+import ca.easyevent.test_generator.EvenementsGenerator;
 
 
-public class EvenementsActivity extends ActionBarActivity {
-
-
-    public final static int PARTICIPANTS_REQUEST = 0;
-    public final static int DEPENSES_REQUEST = 1;
+public class EvenementsActivity extends ActionBarActivity implements EvenementAdapterListener{
 
     private ArrayList<Evenement> listEvenement = new ArrayList<>();
 
@@ -27,18 +25,19 @@ public class EvenementsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evenements);
 
-        Button buttonParticipants = (Button)findViewById(R.id.button_participant);
-        Button buttonDepenses = (Button)findViewById(R.id.button_depenses);
+        listEvenement = EvenementsGenerator.getTestEvenementList();
 
-        buttonParticipants.setOnClickListener(new ParticipantButtonListener());
-        buttonDepenses.setOnClickListener(new DepensesButtonListener());
+        EvenementAdapter adapter = new EvenementAdapter(listEvenement, this);
+        adapter.addListener(this);
+
+        ListView list = (ListView)findViewById(R.id.listEvenements);
+        list.setAdapter(adapter);
+
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
@@ -52,21 +51,10 @@ public class EvenementsActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class ParticipantButtonListener implements View.OnClickListener{
-        public void onClick(View v)
-        {
-            Intent intent = new Intent(EvenementsActivity.this, ParticipantsActivity.class);
-            intent.putExtra("PARTICIPANTS", listEvenement.get(0));
-            startActivityForResult(intent, PARTICIPANTS_REQUEST);
-        }
-    }
-
-    public class DepensesButtonListener implements View.OnClickListener{
-        public void onClick(View v)
-        {
-            Intent intent = new Intent(EvenementsActivity.this, DepenseActivity.class);
-            intent.putExtra("DEPENSES", listEvenement);
-            startActivityForResult(intent, DEPENSES_REQUEST);
-        }
+    @Override
+    public void onClickEvenement(Evenement item, int position) {
+        Intent intent = new Intent(EvenementsActivity.this, EvenementActivity.class);
+        intent.putExtra("EVENEMENT", listEvenement.get(position));
+        startActivity(intent);
     }
 }
