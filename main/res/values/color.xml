@@ -21,9 +21,9 @@
     <item name="accent_dark" type="color">#F50057</item>
 
             <!-- Text color -->
+    <item name="text_dark" type="color">#424242</item>
     <item name="text_regular" type="color">#9E9E9E</item>
     <item name="text_light" type="color">#E0E0E0</item>
-    <item name="text_dark" type="color">#212121</item>
 
 
     <item name="transparent" type="color">#00000000</item>

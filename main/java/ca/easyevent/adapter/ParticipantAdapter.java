@@ -1,87 +1,67 @@
 package ca.easyevent.adapter;
 
-import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
-import android.view.LayoutInflater;
+import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import ca.easyevent.R;
 import ca.easyevent.model.Participant;
 
-/**
- * Created by Cédric on 13/03/2015.
- */
-public class ParticipantAdapter extends BaseAdapter {
+public class ParticipantAdapter extends ArrayAdapter<Participant> {
 
-	/*##############################################################################################
+    /*##############################################################################################
 									ATTRIBUTS
 	###############################################################################################*/
 
     private ArrayList<Participant> listParticipant;
-    private Context context;
-    private LayoutInflater inflater;
-    private ArrayList<ParticipantAdapterListener> listListener = new ArrayList<ParticipantAdapterListener>();
+    private Activity activity;
+    private ArrayList<ParticipantAdapterListener> listListener = new ArrayList<>();
 
-	/*##############################################################################################
+
+    /*##############################################################################################
 									CONSTRUCTEUR
 	###############################################################################################*/
 
-    public ParticipantAdapter(ArrayList<Participant> listParticipant, Context context) {
-        this.listParticipant = listParticipant;
-        this.context = context;
-        inflater = LayoutInflater.from(context);
+    public ParticipantAdapter(Activity activity, ArrayList<Participant> listParticipant){
+        super(activity, R.layout.participant_item, listParticipant);
+        this.activity = activity;
+        this.listParticipant=listParticipant;
     }
 
+    /*##############################################################################################
+									CONTROL VIEW
+	###############################################################################################*/
 
-    /*################################################################################################
-                                        ACCESSEUR
-    ##################################################################################################*/
+    static class ViewHolder {
+        public TextView nameParticipantText, balanceParticipantText;
+        public LinearLayout goToParticipantLayout;
+    }
+
     @Override
-    public int getCount() {
-        return listParticipant.size();
-    }
+    public View getView(int position, View arg1, ViewGroup arg2) {
 
-    public Object getItem(int position) {
-        return listParticipant.get(position);
-    }
+        View childView = arg1;
+        if(childView == null || childView.getTag() == null){
 
-    public long getItemId(int position) {
-        return position;
-    }
+            childView = activity.getLayoutInflater().inflate(R.layout.participant_item, null);
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        RelativeLayout layoutItem;
-        if (convertView == null) {
-            layoutItem = (RelativeLayout) inflater.inflate(R.layout.item_participant, parent, false);
-        } else {
-            layoutItem = (RelativeLayout) convertView;
+            ViewHolder viewHolder = new ViewHolder();
+
+            viewHolder.nameParticipantText = (TextView)childView.findViewById(R.id.nameParticipantText);
+            viewHolder.balanceParticipantText = (TextView)childView.findViewById(R.id.balanceParticipantText);
+            viewHolder.goToParticipantLayout = (LinearLayout) childView.findViewById(R.id.goToParticipantLayout);
+
+            childView.setTag(viewHolder);
         }
 
-        TextView nameParticipantText = (TextView)layoutItem.findViewById(R.id.nameParticipantText);
-        TextView balanceParticipantText = (TextView)layoutItem.findViewById(R.id.balanceParticipantText);
-
-        LinearLayout participantImage = (LinearLayout) layoutItem.findViewById(R.id.contactLayout);
-
-        ImageView goToParticipantIcon = (ImageView) layoutItem.findViewById(R.id.goToParticipantIcon);
-
-
-        nameParticipantText.setText(listParticipant.get(position).getName());
-        balanceParticipantText.setText(listParticipant.get(position).getEquiPersoTotal()+"");
-
-        int[] androidColors = context.getResources().getIntArray(R.array.primary_color);
-        int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
-
-        GradientDrawable bgShape = (GradientDrawable)participantImage.getBackground();
-        bgShape.setColor(randomAndroidColor);
+        ViewHolder holder = (ViewHolder) childView.getTag();
+        holder.nameParticipantText.setText(listParticipant.get(position).getName());
+        holder.balanceParticipantText.setText((int)listParticipant.get(position).getEquiPersoTotal()+" $");
 
         /* Si image
         Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.arrow_right);
@@ -89,19 +69,37 @@ public class ParticipantAdapter extends BaseAdapter {
         participantImage.setImageDrawable(roundedImage);
         */
 
-        goToParticipantIcon.setTag(position);
-        goToParticipantIcon.setOnClickListener(new View.OnClickListener() {
+        holder.goToParticipantLayout.setTag(position);
+        holder.goToParticipantLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Integer position = (Integer)v.getTag();
                 sendListener(listParticipant.get(position), position);
-                System.out.println("Click sur : ");
             }
         });
 
-        return layoutItem;
+        return childView;
     }
 
+
+    /*##############################################################################################
+									ACCESSEURS
+	###############################################################################################*/
+
+    @Override
+    public int getCount() {
+        return listParticipant.size();
+    }
+
+    @Override
+    public Participant getItem(int arg0) {
+        return listParticipant.get(arg0);
+    }
+
+    @Override
+    public long getItemId(int arg0) {
+        return arg0;
+    }
 
 	/*################################################################################################
 								COMPORTEMENT LISTENER

@@ -21,6 +21,7 @@ public class Evenement implements Parcelable
 	private ArrayList<Depense> listDepense = new ArrayList<>();
 	private ArrayList<Participant> listeParticipant = new ArrayList<>();
 
+
 	/*##############################################################################################
 								Constructeur
 	###############################################################################################*/
@@ -43,69 +44,61 @@ public class Evenement implements Parcelable
             this.dateFin    = source.readParcelable(DateModifiable.class.getClassLoader());
             source.readTypedList(this.listeParticipant, Participant.CREATOR);
 
-                //Création des dépendances
-            int numDepense =0;
+                //===========================================
+                //  Création des inter-dépendances de lien
+                //===========================================
+
             for (Participant participant : this.listeParticipant){
-                numDepense =0;
                 for (Participation participation :participant.getListeParticipation()){
                     participation.setParticipant(participant);
-                    if(this.listDepense.size()<participant.getListeParticipation().size()) {
+
+                        //On cherche si la depense existe deja
+                    int index = 0;
+                    for (Depense depense : this.listDepense){
+                        if(depense.getLibelle().equals(participation.getDepense().getLibelle())){
+                            depense.addParticipation(participation);
+                            index=1;
+                            break;
+                        }
+                    }
+                        //Si non on l'ajoute dans la liste
+                    if(index==0) {
                         participation.getDepense().addParticipation(participation);
                         this.listDepense.add(participation.getDepense());
                     }
-                    else{
-                        this.listDepense.get(numDepense).addParticipation(participation);
-                    }
-                    numDepense ++;
                 }
             }
         }
     }
+
 	/*##############################################################################################
 										AJOUT
 	###############################################################################################*/
-
-	public void ajoutParticipant(String name, String telephone, String mail){
-		this.listeParticipant.add(new Participant(name, telephone, mail));
-	}
 
     public void ajoutParticipant(Participant participant){
         this.listeParticipant.add(participant);
     }
 
-	public void ajoutDepense(String libelle, DateModifiable date){
-		this.listDepense.add(new Depense(libelle, date));
-	}
-
     public void ajoutDepense(Depense depense){
         this.listDepense.add(depense);
+        depense.calculEquilibreWithPropag();
     }
 
-	public void ajouterParticipation(String nomParticipant, String libelleDepense, double montant, double tauxParticipation )
-	{
-        Participant participant = new Participant();
-        for (Participant participantCourant :this.listeParticipant) {
-            if(participantCourant.getName().equals(nomParticipant))
-                participant = this.listeParticipant.get(this.listeParticipant.indexOf(participantCourant));
-        }
-        Depense depense= new Depense();
-        for (Depense depenseCourant :this.listDepense) {
-            if(depenseCourant.getLibelle().equals(libelleDepense))
-                depense = this.listDepense.get(this.listDepense.indexOf(depenseCourant));
-        }
-		
-		Participation participation = new Participation(participant, depense, montant, tauxParticipation);
+	public void ajouterParticipation(String nomParticipant, String libelleDepense, double montant ){
+        Participant participant = this.getParticipant(nomParticipant);
+        Depense depense= this.getDepense(libelleDepense);
+
+		Participation participation = new Participation(participant, depense, montant);
 		participant.addParticipation(participation);
 		depense.addParticipation(participation);
 	}
 
-    public void ajouterParticipation(Participant participant, Depense depense, double montant, double tauxParticipation )
-    {
-        Participation participation = new Participation(participant, depense, montant, tauxParticipation);
+    public void ajouterParticipation(Participant participant, Depense depense, double montant ) {
+        Participation participation = new Participation(participant, depense, montant);
         participant.addParticipation(participation);
         depense.addParticipation(participation);
     }
-	
+
 
 	/*################################################################################################
 								ACCESSEUR
@@ -135,6 +128,21 @@ public class Evenement implements Parcelable
         return listeParticipant;
     }
 
+    public Participant getParticipant(String name){
+        for (Participant participantCourant :this.listeParticipant) {
+            if(participantCourant.getName().equals(name))
+                return participantCourant;
+        }
+        return null;
+    }
+
+    public Depense getDepense(String libelle){
+        for (Depense depenseCourant :this.listDepense) {
+            if(depenseCourant.getLibelle().equals(libelle))
+                return depenseCourant;
+        }
+        return null;
+    }
 
     /*################################################################################################
 								MODIFICATEUR

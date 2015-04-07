@@ -1,0 +1,308 @@
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        tools:context="ca.easyevent.activity.DepenseActivity">
+
+        <!--tool bar-->
+        <LinearLayout
+            android:id="@+id/toolBar"
+            android:orientation="horizontal"
+            android:background="@color/main_regular"
+            android:layout_width="fill_parent"
+            android:layout_height="56dp"
+            >
+
+        </LinearLayout>
+
+        <!--main title-->
+        <TextView
+            android:id="@+id/titleDepenseText"
+
+            android:text="Nouvelle depense"
+            android:textSize="24sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="normal"
+            android:fontFamily="sans-serif"
+
+            android:gravity="center_vertical"
+            android:paddingLeft="72dp"
+            android:background="@drawable/background_shadow"
+            android:layout_width="fill_parent"
+            android:layout_height="72dp"
+            android:layout_below="@+id/toolBar"
+            />
+
+        <View
+            android:id="@+id/subTitleText"
+            android:background="#FFFFFF"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_below="@+id/titleDepenseText"
+            />
+
+        <!--Libelle-->
+        <LinearLayout
+            android:id="@+id/lib_dep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="24dp"
+            android:orientation="horizontal"
+            android:layout_below="@+id/subTitleText">
+
+            <ImageView
+                android:id="@+id/lib_dep_icon"
+
+                android:src="@drawable/price_tag"
+                android:scaleType="centerCrop"
+                android:tint="@color/main_dark"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                />
+
+            <EditText
+                android:id="@+id/lib_dep_text"
+
+                android:singleLine="true"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:hint="Libelle"
+
+
+
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/text_size_body"
+                android:fontFamily="sans-serif"
+                android:textStyle="normal"
+                />
+        </LinearLayout>
+
+        <!--Date-->
+        <LinearLayout
+            android:id="@+id/date_dep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="24dp"
+            android:orientation="horizontal"
+            android:layout_below="@+id/lib_dep">
+
+            <ImageView
+                android:id="@+id/date_dep_icon"
+
+                android:src="@drawable/calendar"
+                android:scaleType="centerCrop"
+                android:tint="@color/main_dark"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                />
+
+            <EditText
+                android:id="@+id/date_dep_text"
+
+                android:singleLine="true"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:hint="Date"
+
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/text_size_body"
+                android:fontFamily="sans-serif"
+                android:textStyle="normal"
+
+                android:inputType="date"
+                />
+
+        </LinearLayout>
+
+        <!--Montant-->
+        <LinearLayout
+            android:id="@+id/budget_tot_dep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="24dp"
+            android:orientation="horizontal"
+            android:layout_below="@+id/subTitleText"
+            android:layout_alignParentRight="true">
+
+            <ImageView
+                android:id="@+id/budget_tot_dep_icon"
+
+                android:src="@drawable/money"
+                android:scaleType="centerCrop"
+                android:tint="@color/main_dark"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/budget_tot_dep_valor"
+
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+
+                android:background="@android:color/white"
+
+                android:text="215 $"
+                android:textColor="@color/text_dark"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
+                />
+
+        </LinearLayout>
+
+        <!--Participation title-->
+        <LinearLayout
+            android:id="@+id/part_dep"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="24dp"
+            android:orientation="horizontal"
+            android:layout_below="@+id/date_dep">
+
+            <ImageView
+                android:id="@+id/part_dep_icon"
+
+                android:src="@drawable/persons"
+                android:scaleType="centerCrop"
+                android:tint="@color/main_dark"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                />
+
+
+            <EditText
+                android:id="@+id/part_dep_title"
+
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+
+                android:background="@android:color/white"
+
+                android:text="Participants"
+                android:textColor="@color/text_dark"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif"
+                android:textStyle="normal"
+                />
+        </LinearLayout>
+
+        <!--line-->
+        <View
+            android:id="@+id/line_part"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/part_dep"
+            android:background="@color/text_light"
+            android:layout_marginTop="2dp"/>
+
+        <!--Menu participation-->
+        <RelativeLayout
+            android:id="@+id/menu_participation"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:paddingLeft="50dp"
+            android:paddingRight="60dp"
+
+            android:orientation="horizontal"
+            android:layout_below="@+id/line_part">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+
+                android:background="@android:color/white"
+
+                android:text="Concerne"
+                android:textColor="@color/text_regular"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif"
+                android:textStyle="normal"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+
+                android:background="@android:color/white"
+
+                android:text="A payé"
+                android:textColor="@color/text_regular"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif"
+                android:textStyle="normal"
+                />
+        </RelativeLayout>
+
+        <!--Participation-->
+        <ListView
+            android:id="@+id/list_participation"
+
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/menu_participation"
+
+            android:background="#FFFFFF"
+            android:divider="@color/text_light"
+            android:dividerHeight="1dip"
+
+            android:choiceMode="singleChoice" >
+
+        </ListView>
+
+        <Button
+            android:id="@+id/send"
+
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/list_participation"
+
+            android:layout_marginTop="10dp"
+
+            android:background="#3F51B5"
+            android:text="Valider"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            />
+
+
+    </RelativeLayout>
+
+</ScrollView>

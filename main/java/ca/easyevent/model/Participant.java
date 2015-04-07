@@ -16,9 +16,8 @@ public class Participant implements Parcelable{
 	private String nom = new String(""); 
 	private String telephone = new String(""); 
 	private String mail = new String(""); 
-		
-	private float BudgetPersoTotal = 0;
-	private float equilibrePersoTotal = 0;
+
+	private double equilibrePersoTotal = 0;
 	
 	private ArrayList<Participation> listeParticipation = new ArrayList<>();
 	
@@ -44,6 +43,7 @@ public class Participant implements Parcelable{
             this.nom = source.readString();
             this.telephone = source.readString();
             this.mail = source.readString();
+            this.equilibrePersoTotal = source.readDouble();
             source.readTypedList(this.listeParticipation, Participation.CREATOR);
         }
     }
@@ -61,20 +61,14 @@ public class Participant implements Parcelable{
 	/*##############################################################################################
 								CALCUL 
 	##############################################################################################*/
-	
-	public void calculBudgetPersoTotal()
-	{
-		this.BudgetPersoTotal = 0;
-		for(Participation participation : this.listeParticipation )
-			this.BudgetPersoTotal += participation.getMontant();
-	}
 
 	public void calculEquiPersoTotal()
 	{
 		this.equilibrePersoTotal = 0;
 		for(Participation participation : this.listeParticipation )
 			this.equilibrePersoTotal += participation.getBalance();
-	}
+        System.out.println("NEW BALANCE for " + this.getName() + " : " + equilibrePersoTotal);
+    }
 	
 
 	/*##############################################################################################
@@ -93,18 +87,19 @@ public class Participant implements Parcelable{
 		return mail;
 	}
 
-	public float getBudgetPersoTotal() {
-		calculBudgetPersoTotal();
-		return BudgetPersoTotal;
-	}
+    public double getBudgetPersoTotal()
+    {
+        double budgetPersoTotal = 0;
+        for(Participation participation : this.listeParticipation )
+            budgetPersoTotal += participation.getMontant();
+        return budgetPersoTotal;
+    }
 	
 	public ArrayList<Participation> getListeParticipation() {
 		return listeParticipation;
 	}
 	
-	public float getEquiPersoTotal()
-	{
-		calculEquiPersoTotal();
+	public double getEquiPersoTotal(){
 		return equilibrePersoTotal;
 	}
 
@@ -133,7 +128,7 @@ public class Participant implements Parcelable{
 	@Override
 	public String toString() {
 		return "Participant [nom=" + nom + ", telephone=" + telephone
-				+ ", mail=" + mail + ", BudgetPersoTotal=" + BudgetPersoTotal
+				+ ", mail=" + mail + ", BudgetPersoTotal=" + getBudgetPersoTotal()
 				+ ", equilibrePersoTotal=" + equilibrePersoTotal + "]";
 	}
 
@@ -162,8 +157,9 @@ public class Participant implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.nom);
-        dest.writeString(this.mail);
         dest.writeString(this.telephone);
+        dest.writeString(this.mail);
+        dest.writeDouble(this.equilibrePersoTotal);
         dest.writeTypedList(listeParticipation);
     }
 }

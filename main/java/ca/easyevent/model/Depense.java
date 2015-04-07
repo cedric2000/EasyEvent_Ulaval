@@ -15,6 +15,7 @@ public class Depense implements Parcelable
 	
 	private String libelle = new String("");
     private double montantTotal =0;
+    private double nbParticipant= 0;
 
 	private DateModifiable date;
 	private ArrayList<Participation> listeParticipation = new ArrayList<>();
@@ -30,15 +31,6 @@ public class Depense implements Parcelable
 		this.libelle = libelle;
 		this.date = date;
 	}
-	
-	
-	public Depense(String libelle, DateModifiable date, ArrayList<Participation> listeParticipation) {
-		super();
-		this.libelle = libelle;
-		this.date = date;
-		this.listeParticipation = listeParticipation;
-	}
-
 
     public Depense(Parcel source){
         if(source.dataSize()>0){
@@ -65,14 +57,21 @@ public class Depense implements Parcelable
 	##################################################################################################*/
 	
 	/**
-	 * Le montant total d'une d�pense est donn� par la somme des participations pour chaque participants
+	 * Le montant total d'une dépense est donné par la somme des participations pour chaque participants
 	 */
 	public void calculMontantTotal()
 	{
 		this.montantTotal=0;
 		for(Participation participation : this.listeParticipation )
-			this.montantTotal += participation.getMontant();
+            this.montantTotal += participation.getMontant();
 	}
+
+    public void calculEquilibreWithPropag()
+    {
+        calculMontantTotal();
+        for(Participation participation : this.listeParticipation )
+            participation.calculEquilibreWithPropag();
+    }
 	
 	/*################################################################################################
 										ACCESSEUR
@@ -83,9 +82,12 @@ public class Depense implements Parcelable
 	}
 	
 	public double getMontantTotal() {
-		calculMontantTotal();
 		return montantTotal;
 	}
+
+    public int getNbParticipants() {
+        return this.listeParticipation.size();
+    }
 	
 	public DateModifiable getDate() {
 		return date;

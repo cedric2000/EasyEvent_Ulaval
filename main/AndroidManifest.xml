@@ -7,9 +7,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/CustomActionBarTheme" >
-
         <activity
-            android:name=".activity.EvenementsActivity"
+            android:name=".activity.EvenementListActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,19 +21,19 @@
             android:label="@string/title_activity_evenement" >
         </activity>
         <activity
-            android:name=".activity.FormParticipantActivity"
+            android:name=".activity.ParticipantFormActivity"
             android:label="@string/title_activity_form_participant" >
         </activity>
         <activity
-            android:name=".activity.FormDepenseActivity"
+            android:name=".activity.DepenseFormActivity"
             android:label="@string/title_activity_form_depense" >
         </activity>
         <activity
-            android:name=".activity.DepensesActivity"
+            android:name=".activity.DepenseListActivity"
             android:label="@string/title_activity_depense" >
         </activity>
         <activity
-            android:name=".activity.ParticipantsActivity"
+            android:name=".activity.ParticipantListActivity"
             android:label="@string/title_activity_participants" >
         </activity>
         <activity
@@ -42,8 +41,20 @@
             android:label="@string/title_activity_send_resume" >
         </activity>
         <activity
-            android:name=".activity.FormEvenementActivity"
+            android:name=".activity.EvenementFormActivity"
             android:label="@string/title_activity_form_evenement" >
+        </activity>
+        <activity
+            android:name=".activity.ParticipantActivity"
+            android:label="@string/title_activity_participant" >
+        </activity>
+        <activity
+            android:name=".activity.DepenseActivity"
+            android:label="@string/title_activity_depense" >
+        </activity>
+        <activity
+            android:name=".activity.SeeResumeActivity"
+            android:label="@string/title_activity_see_resume" >
         </activity>
     </application>
 

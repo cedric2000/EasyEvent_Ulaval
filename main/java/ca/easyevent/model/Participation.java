@@ -14,7 +14,6 @@ public class Participation implements Parcelable{
 	private Depense depense = new Depense();
 
 	private double montant;
-	private double tauxParticipation;
 	private double equilibre;
 	
 
@@ -25,12 +24,10 @@ public class Participation implements Parcelable{
 	public Participation(){}
 
 
-	public Participation(Participant participant, Depense depense, double montant,double tauxParticipation){
+	public Participation(Participant participant, Depense depense, double montant){
 		this.participant = participant;
 		this.depense = depense;
 		this.montant = montant;
-		this.tauxParticipation =tauxParticipation;
-		calculEquilibre();
 	}
 
     public Participation(Parcel source){
@@ -38,7 +35,7 @@ public class Participation implements Parcelable{
             this.participant = new Participant();
             this.depense = source.readParcelable(Depense.class.getClassLoader());
             this.montant = source.readDouble();
-            this.tauxParticipation = source.readDouble();
+            this.equilibre = source.readDouble();
         }
     }
 
@@ -49,9 +46,13 @@ public class Participation implements Parcelable{
 	###############################################################################################*/
 	
 	public void calculEquilibre(){
-		this.equilibre = this.montant - (this.tauxParticipation/100)*this.depense.getMontantTotal();
+		this.equilibre = this.montant - (this.depense.getMontantTotal() / this.getDepense().getNbParticipants());
 	}
-	
+
+    public void calculEquilibreWithPropag(){
+        this.equilibre = this.montant - (this.depense.getMontantTotal() / this.getDepense().getNbParticipants());
+        this.participant.calculEquiPersoTotal();
+    }
 
 	/*##############################################################################################
 									ACCESSEUR
@@ -68,13 +69,8 @@ public class Participation implements Parcelable{
 	public double getMontant() {
 		return montant;
 	}
-
-	public double getTauxParticipation() {
-		return tauxParticipation;
-	}
 	
 	public double getBalance() {
-		calculEquilibre();
 		return equilibre;
 	}
 
@@ -93,11 +89,6 @@ public class Participation implements Parcelable{
     public void setMontant(double montant) {
         this.montant = montant;
     }
-
-    public void setTauxParticipation(double tauxParticipation) {
-        this.tauxParticipation = tauxParticipation;
-    }
-
     public void setEquilibre(double equilibre) {
         this.equilibre = equilibre;
     }
@@ -108,7 +99,6 @@ public class Participation implements Parcelable{
                 "participant=" + participant +
                 ", depense=" + depense +
                 ", montant=" + montant +
-                ", tauxParticipation=" + tauxParticipation +
                 ", equilibre=" + equilibre +
                 '}';
     }
@@ -138,6 +128,6 @@ public class Participation implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(this.depense, flags);
         dest.writeDouble(this.montant);
-        dest.writeDouble(this.tauxParticipation);
+        dest.writeDouble(this.equilibre);
     }
 }

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:id="@+id/item_student"
+
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:paddingLeft="50dp"
+    android:paddingRight="50dp"
+>
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
+
+    <!-- First row -->
+    <TextView
+        android:id="@+id/nameParticipationText"
+
+        android:text="Louis"
+        android:textSize="16sp"
+        android:textColor="@color/text_dark"
+        android:fontFamily="sans-serif"
+        android:textStyle="normal"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/checkBox"
+        android:layout_centerVertical="true"
+
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginLeft="16dp"
+        />
+
+
+    <EditText
+        android:id="@+id/montant_participation"
+
+        android:text="200"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        android:textStyle="normal"
+
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/devise"
+        android:layout_centerVertical="true"
+        android:paddingTop="10dp"
+        android:gravity="center"
+    />
+
+    <TextView
+        android:id="@+id/devise"
+
+        android:text="$"
+        android:textSize="16sp"
+        android:textColor="@color/text_dark"
+        android:fontFamily="sans-serif"
+        android:textStyle="normal"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+    />
+
+
+</RelativeLayout>

@@ -3,10 +3,8 @@ package ca.easyevent.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 
 import ca.easyevent.R;
 import ca.easyevent.model.Evenement;
@@ -16,51 +14,42 @@ public class EvenementActivity extends ActionBarActivity {
 
     private Evenement evenement = new Evenement();
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_evenement);
+        setContentView(R.layout.event_activity);
 
         evenement = getIntent().getParcelableExtra("EVENEMENT");
-
-        Button buttonParticipants = (Button)findViewById(R.id.button_participant);
-        Button buttonDepenses = (Button)findViewById(R.id.button_depenses);
-        buttonParticipants.setOnClickListener(new ParticipantButtonListener());
-        buttonDepenses.setOnClickListener(new DepensesButtonListener());
+        initButtons();
     }
 
+    private void initButtons(){
+        TextView buttonParticipants = (TextView)findViewById(R.id.button_participant),
+                buttonDepenses = (TextView)findViewById(R.id.button_depenses),
+                buttonSeeRapport = (TextView)findViewById(R.id.button_see_rap),
+                buttonSendRapport = (TextView)findViewById(R.id.button_send_rap),
+                buttonPlace = (TextView)findViewById(R.id.button_place);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
+        buttonParticipants.setOnClickListener(new ButtonListener(ParticipantListActivity.class));
+        buttonDepenses.setOnClickListener(new ButtonListener(DepenseListActivity.class));
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+    public class ButtonListener implements View.OnClickListener{
+        private Class<?> cls;
+
+        public ButtonListener( Class<?> cls) {
+            this.cls = cls;
         }
-        return super.onOptionsItemSelected(item);
-    }
 
-
-    public class ParticipantButtonListener implements View.OnClickListener{
         public void onClick(View v)
         {
-            Intent intent = new Intent(EvenementActivity.this, ParticipantsActivity.class);
-            intent.putExtra("EVENEMENT", evenement);
+            Intent intent = new Intent(EvenementActivity.this, cls);
+            if(cls.equals(ParticipantListActivity.class)||cls.equals(DepenseListActivity.class))
+                intent.putExtra("EVENEMENT", evenement);
             startActivity(intent);
         }
     }
 
-    public class DepensesButtonListener implements View.OnClickListener{
-        public void onClick(View v)
-        {
-            Intent intent = new Intent(EvenementActivity.this, DepensesActivity.class);
-            intent.putExtra("EVENEMENT", evenement);
-            startActivity(intent);
-        }
-    }
 }

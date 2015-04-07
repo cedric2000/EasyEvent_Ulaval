@@ -1,11 +1,10 @@
 package ca.easyevent.adapter;
 
-import android.content.Context;
-import android.view.LayoutInflater;
+import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.RelativeLayout;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -14,63 +13,65 @@ import ca.easyevent.R;
 import ca.easyevent.model.Depense;
 
 
-public class DepenseAdapter extends BaseAdapter {
+public class DepenseAdapter extends ArrayAdapter<Depense>{
 
-	/*##############################################################################################
+    /*##############################################################################################
 									ATTRIBUTS
 	###############################################################################################*/
 
     private ArrayList<Depense> listDepense;
-    private Context context;
-    private LayoutInflater inflater;
+    private Activity activity;
     private ArrayList<DepenseAdapterListener> listListener = new ArrayList<>();
 
-	/*##############################################################################################
+
+    /*##############################################################################################
 									CONSTRUCTEUR
 	###############################################################################################*/
 
-    public DepenseAdapter(ArrayList<Depense> listDepense, Context context) {
-        this.listDepense = listDepense;
-        this.context = context;
-        inflater = LayoutInflater.from(context);
+    public DepenseAdapter(Activity activity, ArrayList<Depense> listDepense){
+        super(activity, R.layout.depense_item, listDepense);
+        this.activity = activity;
+        this.listDepense=listDepense;
     }
 
 
-    /*################################################################################################
-                                        ACCESSEUR
-    ##################################################################################################*/
+
+
+    /*##############################################################################################
+									CONTROL VIEW
+	###############################################################################################*/
+
+    static class ViewHolder {
+        public TextView libelleText, depenseursText, montantDepenseText;
+        public LinearLayout goToDepenseLayout;
+    }
+
     @Override
-    public int getCount() {
-        return listDepense.size();
-    }
+    public View getView(int position, View arg1, ViewGroup arg2) {
 
-    public Object getItem(int position) {
-        return listDepense.get(position);
-    }
+        View childView = arg1;
+        if(childView == null || childView.getTag() == null){
 
-    public long getItemId(int position) {
-        return position;
-    }
+            childView = activity.getLayoutInflater().inflate(R.layout.depense_item, null);
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder = new ViewHolder();
 
-        RelativeLayout layoutItem;
-        if (convertView == null) {
-            layoutItem = (RelativeLayout) inflater.inflate(R.layout.item_depense, parent, false);
-        } else {
-            layoutItem = (RelativeLayout) convertView;
+            viewHolder.libelleText = (TextView)childView.findViewById(R.id.lib_dep);
+            viewHolder.depenseursText = (TextView)childView.findViewById(R.id.depenseurs);
+            viewHolder.montantDepenseText = (TextView)childView.findViewById(R.id.montant_depense);
+            viewHolder.goToDepenseLayout = (LinearLayout)childView.findViewById(R.id.goToDepenseLayout);
+
+            childView.setTag(viewHolder);
         }
 
-        TextView participantDepenseText = (TextView)layoutItem.findViewById(R.id.participantDepenseText);
-        TextView libelleDepenseText = (TextView)layoutItem.findViewById(R.id.libelleDepenseText);
-        TextView montantDepenseText = (TextView)layoutItem.findViewById(R.id.montantDepenseText);
+        ViewHolder holder = (ViewHolder) childView.getTag();
 
-        participantDepenseText.setText("Bob");
-        libelleDepenseText.setText(listDepense.get(position).getLibelle());
-        montantDepenseText.setText(listDepense.get(position).getMontantTotal()+"");
+        holder.libelleText.setText(listDepense.get(position).getLibelle());
+        holder.depenseursText.setText("Bob");
+        holder.montantDepenseText.setText((int) (listDepense.get(position).getMontantTotal()) + " $");
 
-        participantDepenseText.setTag(position);
-        participantDepenseText.setOnClickListener(new View.OnClickListener() {
+        holder.goToDepenseLayout.setTag(position);
+        holder.goToDepenseLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Integer position = (Integer)v.getTag();
@@ -78,9 +79,28 @@ public class DepenseAdapter extends BaseAdapter {
             }
         });
 
-        return layoutItem;
+        return childView;
     }
 
+
+    /*##############################################################################################
+									ACCESSEURS
+	###############################################################################################*/
+
+    @Override
+    public int getCount() {
+        return listDepense.size();
+    }
+
+    @Override
+    public Depense getItem(int arg0) {
+        return listDepense.get(arg0);
+    }
+
+    @Override
+    public long getItemId(int arg0) {
+        return arg0;
+    }
 
 	/*################################################################################################
 								COMPORTEMENT LISTENER
