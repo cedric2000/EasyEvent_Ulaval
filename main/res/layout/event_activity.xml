@@ -1,6 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+
     android:orientation="vertical"
     >
     
@@ -68,13 +69,49 @@
 
         </LinearLayout>
 
+        <View
+            android:id="@+id/subTitleText"
+            android:background="@android:color/transparent"
+            android:layout_width="fill_parent"
+            android:layout_height="36dp"
+            android:layout_below="@+id/desc_event_layout"
+            />
+
+        <!--Edit Button -->
+        <LinearLayout
+            android:id="@+id/edit_button_layout"
+
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+
+            android:layout_alignBottom="@id/desc_event_layout"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+
+            android:layout_marginBottom="-25dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/flotting_btn">
+
+            <ImageButton
+
+                android:id="@+id/edit_button"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
+                android:layout_marginLeft="12dp"
+                android:src="@drawable/edit"
+                android:tint="@android:color/white"
+                android:background="@color/accent_regular"/>
+        </LinearLayout>
+
         <!--Participant -->
         <RelativeLayout
             android:id="@+id/part_card"
 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/desc_event_layout"
+            android:layout_below="@+id/subTitleText"
             android:paddingTop="18dp"
 
             android:orientation="vertical"
@@ -125,7 +162,7 @@
                         android:id="@+id/best_part_layout"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-
+                        android:visibility="gone"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="24dp"
                         android:orientation="horizontal">
@@ -152,7 +189,7 @@
                             android:background="@android:color/white"
 
                             android:text="Colin"
-                            android:textColor="@color/text_regular"
+                            android:textColor="@android:color/holo_green_dark"
                             android:textSize="16sp"
                             android:fontFamily="sans-serif"
                             android:textStyle="normal"
@@ -178,16 +215,17 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/worse_part_layout"
+                        android:id="@+id/worst_part_layout"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
 
+                        android:visibility="gone"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="24dp"
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/worse_part_logo"
+                            android:id="@+id/worst_part_logo"
 
                             android:src="@drawable/thum_down"
                             android:scaleType="centerCrop"
@@ -198,24 +236,23 @@
                             />
 
                         <TextView
-                            android:id="@+id/worse_part_name"
+                            android:id="@+id/worst_part_name"
 
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_gravity="center"
 
-                            android:background="@android:color/white"
 
                             android:text="Jeremy"
-                            android:textColor="@color/text_regular"
+                            android:textColor="@android:color/holo_red_light"
                             android:textSize="16sp"
                             android:fontFamily="sans-serif"
                             android:textStyle="normal"
                             />
 
                         <TextView
-                            android:id="@+id/worse_part_budget"
+                            android:id="@+id/worst_part_budget"
 
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -232,8 +269,25 @@
                             android:textStyle="bold"
                             />
                     </LinearLayout>
-                    
+
+                    <TextView
+                        android:id="@+id/part_card_empty"
+
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="16dp"
+                        android:gravity="center"
+                        android:background="@android:color/white"
+
+                        android:text="Ajouter des participants"
+                        android:textColor="@color/text_regular"
+                        android:textSize="16sp"
+                        android:fontFamily="sans-serif"
+                        android:textStyle="normal"
+                    />
+
                 </LinearLayout>
+
                 
             </LinearLayout>
 
@@ -255,7 +309,7 @@
 
                 android:text="VOIR"
                 android:textSize="14sp"
-                android:textColor="@drawable/text_color"
+                android:textColor="@drawable/text_color_dark"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -270,7 +324,6 @@
                 android:layout_marginRight="16dp"/>
             
         </RelativeLayout>
-
 
 
         <!--Depenses -->
@@ -307,7 +360,7 @@
                 <LinearLayout
                     android:id="@+id/dep_card_text_layout"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:orientation="vertical">
 
                     <TextView
@@ -327,11 +380,27 @@
                         android:textStyle="normal"
                         />
 
+                    <TextView
+                        android:id="@+id/dep_card_empty"
+
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="16dp"
+                        android:gravity="center"
+                        android:background="@android:color/white"
+
+                        android:text="Ajouter des dépenses"
+                        android:textColor="@color/text_regular"
+                        android:textSize="16sp"
+                        android:fontFamily="sans-serif"
+                        android:textStyle="normal"
+                        />
+
                     <LinearLayout
                         android:id="@+id/budg_dep_layout"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-
+                        android:visibility="gone"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="24dp"
                         android:orientation="horizontal">
@@ -370,6 +439,7 @@
                             />
                     </LinearLayout>
 
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -392,7 +462,7 @@
 
                 android:text="VOIR"
                 android:textSize="14sp"
-                android:textColor="@drawable/text_color"
+                android:textColor="@drawable/text_color_dark"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -407,7 +477,6 @@
                 android:layout_marginRight="16dp"/>
 
         </RelativeLayout>
-
 
         <!--Rapport -->
         <RelativeLayout
@@ -443,7 +512,7 @@
                 <LinearLayout
                     android:id="@+id/rap_card_text_layout"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:orientation="vertical">
 
                     <TextView
@@ -463,11 +532,27 @@
                         android:textStyle="normal"
                         />
 
+                    <TextView
+                        android:id="@+id/rap_card_empty"
+
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="16dp"
+                        android:gravity="center"
+                        android:background="@android:color/white"
+
+                        android:text="Pas assez de données"
+                        android:textColor="@color/text_regular"
+                        android:textSize="16sp"
+                        android:fontFamily="sans-serif"
+                        android:textStyle="normal"
+                        />
+
                     <LinearLayout
                         android:id="@+id/best_rap_layout"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-
+                        android:visibility="gone"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="24dp"
                         android:orientation="horizontal">
@@ -531,7 +616,7 @@
 
                 android:text="VOIR"
                 android:textSize="14sp"
-                android:textColor="@drawable/text_color"
+                android:textColor="@drawable/text_color_dark"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -551,7 +636,7 @@
 
                 android:text="ENVOYER"
                 android:textSize="14sp"
-                android:textColor="@drawable/text_color"
+                android:textColor="@drawable/text_color_dark"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -670,7 +755,7 @@
 
                 android:text="VOIR"
                 android:textSize="14sp"
-                android:textColor="@drawable/text_color"
+                android:textColor="@drawable/text_color_dark"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

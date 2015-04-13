@@ -1,8 +1,5 @@
 package ca.easyevent.utils;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -21,7 +18,7 @@ import java.util.StringTokenizer;
  * @author Equipe PB8 2014
  * @version 1.0
  */
-public class DateModifiable implements Parcelable {
+public class DateModifiable   {
 
 	private GregorianCalendar c = new GregorianCalendar();
 
@@ -92,12 +89,6 @@ public class DateModifiable implements Parcelable {
         c.set(annee, mois - 1, jour,0,0,0);
     }
 
-    public DateModifiable(Parcel source){
-        if(source.dataSize()>0){
-            c.set(source.readInt(),source.readInt()+1,source.readInt(),
-                    source.readInt(),source.readInt(),source.readInt());
-        }
-    }
     // ##############################################################################################
 	// 									Incremente Seconde
 	// ##############################################################################################
@@ -292,13 +283,18 @@ public class DateModifiable implements Parcelable {
 
 	public String toString() 
 	{
-		StringTokenizer st = new StringTokenizer(c.getTime().toString(), " ");
-		String[] s = new String[6];
-		int i;
-		for (i = 0; i < 6; i++)
-			s[i] = st.nextToken();
+        String jour, mois ;
+        if (getJourDuMois()<10)
+            jour = "0"+getJourDuMois();
+        else
+            jour = ""+getJourDuMois();
 
-		return s[2] + ' ' + s[1] + ' ' + s[5] + ' ' + s[3];
+        if (getMois()<10)
+            mois = "0"+getMois();
+        else
+            mois = ""+getMois();
+
+		return jour+"/"+mois+"/"+getAnnee();
 
 	}
 
@@ -338,7 +334,7 @@ public class DateModifiable implements Parcelable {
 	}
 	public int getMois() 
 	{
-		return c.get(Calendar.MONTH) - 1;
+		return c.get(Calendar.MONTH) + 1;
 	}
 	public int getAnnee() 
 	{
@@ -418,35 +414,5 @@ public class DateModifiable implements Parcelable {
 	}
 
 
-                /* ###################################
-                         COMPORTEMENT PARCEABLE
-                #####################################*/
-
-    public final static Creator<DateModifiable> CREATOR =
-            new Creator<DateModifiable>()
-            {
-                public DateModifiable createFromParcel(Parcel in) {
-                    return new DateModifiable(in);
-                }
-
-                public DateModifiable[] newArray(int size) {
-                    return new DateModifiable[size];
-                }
-            };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.getJourDuMois());
-        dest.writeInt(this.getMois());
-        dest.writeInt(this.getAnnee());
-        dest.writeInt(this.getHeure());
-        dest.writeInt(this.getMinute());
-        dest.writeInt(this.getSeconde());
-    }
 
 }

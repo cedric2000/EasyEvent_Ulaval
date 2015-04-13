@@ -9,10 +9,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import ca.easyevent.R;
+        import java.util.ArrayList;
+
+        import ca.easyevent.R;
 import ca.easyevent.adapter.ParticipationAdapter;
+import ca.easyevent.database.DAODepense;
+import ca.easyevent.database.DAOParticipation;
 import ca.easyevent.model.Depense;
-import ca.easyevent.model.Evenement;
+        import ca.easyevent.model.Participation;
 
 
 public class DepenseActivity extends Activity  {
@@ -21,7 +25,7 @@ public class DepenseActivity extends Activity  {
 									ATRIBUTS
 	###############################################################################################*/
 
-    private Evenement evenement;
+    private long idEvent;
     private Depense depense;
 
     private ParticipationAdapter adapter;
@@ -29,7 +33,8 @@ public class DepenseActivity extends Activity  {
     private TextView libelleText, montantDepenseText, dateText;
     private ListView list;
 
-    private static final int EDIT_DEPENSE = 101;
+    private DAODepense depenseDAO;
+    private DAOParticipation participationDAO;
 
     /*##############################################################################################
                                     CREATION
@@ -40,33 +45,23 @@ public class DepenseActivity extends Activity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.depense_activity);
 
-        evenement = getIntent().getParcelableExtra("EVENEMENT");
-        String libelleDepense = getIntent().getStringExtra("LIB_DEPENSE");
-        this.depense = evenement.getDepense(libelleDepense);
+        depenseDAO = new DAODepense(this);
+        long idDepense = getIntent().getLongExtra("DEPENSE", 0);
+        depenseDAO.open();
+        depense = depenseDAO.getDepense(idDepense);
 
-                //Text
         libelleText = (TextView)this.findViewById(R.id.lib_dep_text);
         montantDepenseText = (TextView)this.findViewById(R.id.budget_tot_dep_valor);
         dateText = (TextView)this.findViewById(R.id.date_dep_text);
 
-        libelleText.setText(depense.getLibelle());
-        dateText.setText(depense.getDate().toStringDate());
-        montantDepenseText.setText((int)depense.getMontantTotal()+ " $");
-
-
-                //Participations
-        adapter = new ParticipationAdapter(this, depense.getListeParticipation());
-        list = (ListView)findViewById(R.id.list_participation);
-
                 //Button edition
-        final LinearLayout addFlottingButton = (LinearLayout)findViewById(R.id.edit_button_layout);
-        addFlottingButton.setOnClickListener(new View.OnClickListener() {
+        final LinearLayout editFlottingButton = (LinearLayout)findViewById(R.id.edit_button_layout);
+        editFlottingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DepenseActivity.this, DepenseFormActivity.class);
-                intent.putExtra("EVENEMENT", evenement);
-                intent.putExtra("LIB_DEPENSE", depense.getLibelle());
-                startActivityForResult(intent, EDIT_DEPENSE);
+                intent.putExtra("DEPENSE", depense.getId());
+                startActivity(intent);
             }
         });
 
@@ -74,34 +69,61 @@ public class DepenseActivity extends Activity  {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addFlottingButton.performClick();
+                editFlottingButton.performClick();
             }
         });
 
     }
 
+    protected  void onResume(){
+        super.onResume();
+        long idDepense = getIntent().getLongExtra("DEPENSE", 0);
 
-    /*##############################################################################################
-                              COMPORTEMENT D'ACTIVITY
-    ###############################################################################################*/
+        depenseDAO.open();
+        depense = depenseDAO.getDepense(idDepense);
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            evenement = data.getParcelableExtra("EVENEMENT");
-            String libelleDepense = getIntent().getStringExtra("LIB_DEPENSE");
-            this.depense = evenement.getDepense(libelleDepense);
-            adapter = new ParticipationAdapter(this, depense.getListeParticipation());
-            list.setAdapter(adapter);
+            //Text
+        libelleText.setText(depense.getLibelle());
+        dateText.setText(depense.getDate().toStringDate());
+        montantDepenseText.setText((int)depense.getMontantTotal()+ " $");
+
+        //Participations
+        participationDAO = new DAOParticipation(this);
+        participationDAO.open();
+        ArrayList<Participation> listParticipation = new ArrayList<>();
+        for (Participation participation : participationDAO.getAllParticipationsForDepense(idDepense)) {
+            if(participation.isSelected())
+                listParticipation.add(participation);
         }
+
+
+        adapter = new ParticipationAdapter(this, listParticipation);
+        list = (ListView)findViewById(R.id.list_participation);
+        list.setAdapter(adapter);
+        updateCalcul();
+
+        depenseDAO.close();
+        participationDAO.close();
     }
 
-    protected void onDestroy() {
-        super.onDestroy();
-        Intent result = new Intent();
-        result.putExtra("EVENEMENT", evenement);
-        setResult(RESULT_OK, result);
-        finish();
-    }
 
+
+    public void updateCalcul() {
+        double montantDepense = 0;
+        for (Participation participation : adapter.getParticipationList()) {
+            if (participation.isSelected())
+                montantDepense += participation.getMontant();
+        }
+        depense.setMontantTotal(montantDepense);
+        depense.setNbParticipant(adapter.getCount());
+
+        for(Participation p : adapter.getParticipationList()) {
+            if (p.isSelected()) {
+                double equilibre = p.getMontant() - (montantDepense / depense.getNbParticipants());
+                p.setEquilibre(equilibre);
+            }
+        }
+
+        this.montantDepenseText.setText(depense.getMontantTotal() +" $ ");
+    }
 }

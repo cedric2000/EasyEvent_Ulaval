@@ -9,6 +9,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ca.easyevent.R;
+import ca.easyevent.database.DAOParticipant;
 import ca.easyevent.model.Participation;
 
 
@@ -21,6 +22,7 @@ public class ParticipationAdapter extends ArrayAdapter<Participation>{
     private ArrayList<Participation> participationList;
     private Activity activity;
 
+    private DAOParticipant participantDAO;
 
     /*##############################################################################################
 									CONSTRUCTEUR
@@ -31,6 +33,8 @@ public class ParticipationAdapter extends ArrayAdapter<Participation>{
         super(activity, R.layout.participation_maj_item, inParticipationList);
         this.activity = activity;
         this.participationList=inParticipationList;
+        participantDAO = new DAOParticipant(activity);
+        participantDAO.open();
     }
 
 
@@ -59,10 +63,11 @@ public class ParticipationAdapter extends ArrayAdapter<Participation>{
         }
 
         ViewHolder holder = (ViewHolder) childView.getTag();
+        Participation participation = participationList.get(position);
+        String participantName = participantDAO.getParticipant(participation.getId()).getName();
 
-        holder.nameParticipation.setText(participationList.get(position).getParticipant().getName());
-        holder.montantParticipation.setText(participationList.get(position).getMontant()+"");
-
+        holder.nameParticipation.setText(participantName);
+        holder.montantParticipation.setText(participation.getMontant()+"");
         return childView;
     }
 
@@ -84,5 +89,9 @@ public class ParticipationAdapter extends ArrayAdapter<Participation>{
     @Override
     public long getItemId(int arg0) {
         return arg0;
+    }
+
+    public ArrayList<Participation> getParticipationList() {
+        return participationList;
     }
 }

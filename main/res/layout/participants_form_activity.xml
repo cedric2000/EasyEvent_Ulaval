@@ -11,13 +11,42 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white">
 
+        <!--tool bar-->
+        <RelativeLayout
+            android:id="@+id/toolBar"
+            android:orientation="horizontal"
+            android:background="@drawable/background_shadow"
+            android:layout_width="fill_parent"
+            android:layout_height="56dp"
+            >
+
+            <TextView
+                android:id="@+id/send"
+                android:background="@android:color/transparent"
+
+                android:text="VALIDER"
+                android:textSize="14sp"
+                android:textColor="@drawable/text_color_light"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:layout_marginRight="16dp"/>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/image_layout"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="200dp"
-            android:background="@color/main_light">
+            android:background="@color/main_light"
+            android:layout_below="@+id/toolBar">
 
             <ImageView
                 android:id="@+id/contactImageView"
@@ -52,7 +81,7 @@
             android:id="@+id/name_part"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
 
@@ -77,10 +106,11 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
 
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginLeft="20dp"
                 android:layout_gravity="center"
+
+                android:background="@drawable/edit_text"
+                android:paddingBottom="5dp"
 
                 android:hint="Nom"
                 android:textColor="@color/text_dark"
@@ -95,7 +125,8 @@
             android:id="@+id/tel_part"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
             android:orientation="horizontal"
@@ -119,13 +150,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
 
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginLeft="20dp"
                 android:layout_gravity="center"
 
                 android:hint="cellulaire"
                 android:inputType="phone"
+
+                android:background="@drawable/edit_text"
+                android:paddingBottom="5dp"
 
                 android:textColor="@color/text_dark"
                 android:textSize="@dimen/text_size_body"
@@ -139,6 +171,9 @@
             android:id="@+id/mail_part"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
 
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
@@ -162,13 +197,12 @@
                 android:singleLine="true"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginLeft="20dp"
                 android:layout_gravity="center"
 
-                android:textColor="@color/text_dark"
+
+                android:background="@drawable/edit_text"
+                android:paddingBottom="5dp"
                 android:textSize="@dimen/text_size_body"
                 android:fontFamily="sans-serif"
                 android:textStyle="normal"
@@ -179,21 +213,6 @@
         </LinearLayout>
 
 
-        <Button
-            android:id="@+id/send"
-
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/mail_part"
-
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="20dp"
-
-            android:background="@color/main_dark"
-            android:text="Valider"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            />
 
         <LinearLayout
             android:id="@+id/choose_photo_layout"

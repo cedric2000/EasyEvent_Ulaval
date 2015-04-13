@@ -1,21 +1,19 @@
 package ca.easyevent.model;
 
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-public class Participation implements Parcelable{
+public class Participation{
 
 	/*##############################################################################################
 									ATTRIBUTS
 	###############################################################################################*/
-	
-	private Participant participant = new Participant();
-	private Depense depense = new Depense();
+
+    private long id;
+	private long idParticipant;
+	private long idDepense;
 
 	private double montant;
 	private double equilibre;
-	
+	private boolean isSelected;
 
 	/*##############################################################################################
 									CONSTRUCTEUR
@@ -23,28 +21,23 @@ public class Participation implements Parcelable{
 
 	public Participation(){}
 
-
-	public Participation(Participant participant, Depense depense, double montant){
-		this.participant = participant;
-		this.depense = depense;
-		this.montant = montant;
-	}
-
-    public Participation(Parcel source){
-        if(source.dataSize()>0){
-            this.participant = new Participant();
-            this.depense = source.readParcelable(Depense.class.getClassLoader());
-            this.montant = source.readDouble();
-            this.equilibre = source.readDouble();
-        }
+    public Participation( long idParticipant, long idDepense, double montant) {
+        this.idParticipant = idParticipant;
+        this.idDepense = idDepense;
+        this.montant = montant;
     }
 
+    public Participation(long id, long idParticipant, long idDepense, double montant) {
+        this.id = id;
+        this.idParticipant = idParticipant;
+        this.idDepense = idDepense;
+        this.montant = montant;
+    }
 
-
-	/*##############################################################################################
+    /*##############################################################################################
 									CALCUL
 	###############################################################################################*/
-	
+/*
 	public void calculEquilibre(){
 		this.equilibre = this.montant - (this.depense.getMontantTotal() / this.getDepense().getNbParticipants());
 	}
@@ -53,81 +46,75 @@ public class Participation implements Parcelable{
         this.equilibre = this.montant - (this.depense.getMontantTotal() / this.getDepense().getNbParticipants());
         this.participant.calculEquiPersoTotal();
     }
-
+*/
 	/*##############################################################################################
 									ACCESSEUR
 	###############################################################################################*/
-	
-	public Participant getParticipant() {
-		return participant;
-	}
-	
-	public Depense getDepense() {
-		return depense;
-	}
-	
-	public double getMontant() {
-		return montant;
-	}
-	
-	public double getBalance() {
-		return equilibre;
-	}
 
-	/*##############################################################################################
+    public long getId() {
+        return id;
+    }
+
+    public long getIdParticipant() {
+        return idParticipant;
+    }
+
+    public long getIdDepense() {
+        return idDepense;
+    }
+
+    public double getMontant() {
+        return montant;
+    }
+
+    public double getEquilibre() {
+        return equilibre;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    /*##############################################################################################
 									MODIFICATEUR
 	###############################################################################################*/
 
-    public void setParticipant(Participant participant) {
-        this.participant = participant;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setDepense(Depense depense) {
-        this.depense = depense;
+    public void setIdParticipant(long idParticipant) {
+        this.idParticipant = idParticipant;
+    }
+
+    public void setIdDepense(long idDepense) {
+        this.idDepense = idDepense;
     }
 
     public void setMontant(double montant) {
         this.montant = montant;
     }
+
     public void setEquilibre(double equilibre) {
         this.equilibre = equilibre;
     }
 
+    public void setSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
+
+    /*##############################################################################################
+									DESCRIPTEUR
+	###############################################################################################*/
+
     @Override
     public String toString() {
         return "Participation{" +
-                "participant=" + participant +
-                ", depense=" + depense +
+                "participant=" + idParticipant +
+                ", depense=" + idDepense +
                 ", montant=" + montant +
                 ", equilibre=" + equilibre +
                 '}';
     }
 
-/*################################################################################################
-								COMPORTEMENT PARCELABLE
-	##################################################################################################*/
-
-
-    public final static Creator<Participation> CREATOR =
-            new Creator<Participation>()
-            {
-                public Participation createFromParcel(Parcel in) {
-                    return new Participation(in);
-                }
-                public Participation[] newArray(int size) {
-                    return new Participation[size];
-                }
-            };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(this.depense, flags);
-        dest.writeDouble(this.montant);
-        dest.writeDouble(this.equilibre);
-    }
 }

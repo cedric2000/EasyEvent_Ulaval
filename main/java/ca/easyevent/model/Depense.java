@@ -1,21 +1,19 @@
 package ca.easyevent.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.util.ArrayList;
 
 import ca.easyevent.utils.DateModifiable;
 
-public class Depense implements Parcelable
+public class Depense implements Comparable
 {
 	/*##############################################################################################
 									ATTRIBUTS
 	###############################################################################################*/
-	
+
+    private long id;
 	private String libelle = new String("");
     private double montantTotal =0;
-    private double nbParticipant= 0;
+    private int nbParticipant= 1;
 
 	private DateModifiable date;
 	private ArrayList<Participation> listeParticipation = new ArrayList<>();
@@ -31,15 +29,6 @@ public class Depense implements Parcelable
 		this.libelle = libelle;
 		this.date = date;
 	}
-
-    public Depense(Parcel source){
-        if(source.dataSize()>0){
-            this.libelle = source.readString();
-            this.montantTotal = source.readDouble();
-            this.date = source.readParcelable(DateModifiable.class.getClassLoader());
-            this.listeParticipation = new ArrayList<>();
-        }
-    }
 
 	
 	/*##############################################################################################
@@ -65,14 +54,14 @@ public class Depense implements Parcelable
 		for(Participation participation : this.listeParticipation )
             this.montantTotal += participation.getMontant();
 	}
-
+/*
     public void calculEquilibreWithPropag()
     {
         calculMontantTotal();
         for(Participation participation : this.listeParticipation )
-            participation.calculEquilibreWithPropag();
+            participation.();
     }
-	
+	**/
 	/*################################################################################################
 										ACCESSEUR
 	##################################################################################################*/
@@ -86,7 +75,7 @@ public class Depense implements Parcelable
 	}
 
     public int getNbParticipants() {
-        return this.listeParticipation.size();
+        return nbParticipant;
     }
 	
 	public DateModifiable getDate() {
@@ -97,7 +86,11 @@ public class Depense implements Parcelable
 		return listeParticipation;
 	}
 
-	/*################################################################################################
+    public long getId() {
+        return id;
+    }
+
+    /*################################################################################################
 									MODIFICATEUR 
 	##################################################################################################*/
 
@@ -113,7 +106,15 @@ public class Depense implements Parcelable
         this.montantTotal = montantTotal;
     }
 
-	/*##############################################################################################
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setNbParticipant(int nbParticipant) {
+        this.nbParticipant = nbParticipant;
+    }
+
+    /*##############################################################################################
 									DESCRIPTEUR 
 	##############################################################################################*/
 
@@ -122,33 +123,17 @@ public class Depense implements Parcelable
         return "Depense [libelle=" + libelle + ", date=" + date + ", montantTotal=" + montantTotal + "]";
     }
 
-
-	/*################################################################################################
-								COMPORTEMENT PARCELABLE
-	##################################################################################################*/
-
-    public final static Creator<Depense> CREATOR =
-            new Creator<Depense>()
-            {
-                public Depense createFromParcel(Parcel in) {
-                    return new Depense(in);
-                }
-
-                public Depense[] newArray(int size) {
-                    return new Depense[size];
-                }
-            };
+    /*################################################################################################
+                    RELATION D'ORDRE POUR COMPARAISON
+    ##################################################################################################*/
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.libelle);
-        dest.writeDouble(this.montantTotal);
-        dest.writeParcelable(this.date, flags);
+    public int compareTo(Object another) {
+        DateModifiable dateEvent1 = ((Depense) another).getDate();
+        DateModifiable dateEvent2 = this.getDate();
+        if (dateEvent1.before(dateEvent2))  return -1;
+        else if(dateEvent1.equals(dateEvent2)) return 0;
+        else return 1;
     }
 
 }

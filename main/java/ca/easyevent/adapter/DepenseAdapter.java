@@ -68,7 +68,7 @@ public class DepenseAdapter extends ArrayAdapter<Depense>{
 
         holder.libelleText.setText(listDepense.get(position).getLibelle());
         holder.depenseursText.setText("Bob");
-        holder.montantDepenseText.setText((int) (listDepense.get(position).getMontantTotal()) + " $");
+        holder.montantDepenseText.setText( ((int)listDepense.get(position).getMontantTotal()) + " $");
 
         holder.goToDepenseLayout.setTag(position);
         holder.goToDepenseLayout.setOnClickListener(new View.OnClickListener() {

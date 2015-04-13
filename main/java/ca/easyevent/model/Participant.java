@@ -1,25 +1,18 @@
 package ca.easyevent.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.util.ArrayList;
-
-
-public class Participant implements Parcelable{
+public class Participant implements Comparable{
 
 
 	/*##############################################################################################
 									ATTRIBUTS
 	###############################################################################################*/
-	
+
+    private long id;
 	private String nom = new String(""); 
 	private String telephone = new String(""); 
 	private String mail = new String(""); 
 
 	private double equilibrePersoTotal = 0;
-	
-	private ArrayList<Participation> listeParticipation = new ArrayList<>();
 	
 
 	/*##############################################################################################
@@ -38,25 +31,6 @@ public class Participant implements Parcelable{
 		this.mail = mail;
 	}
 
-    public Participant(Parcel source){
-        if(source.dataSize()>0){
-            this.nom = source.readString();
-            this.telephone = source.readString();
-            this.mail = source.readString();
-            this.equilibrePersoTotal = source.readDouble();
-            source.readTypedList(this.listeParticipation, Participation.CREATOR);
-        }
-    }
-
-
-	/*##############################################################################################
-									AJOUT PARTICIPATION
-	###############################################################################################*/
-
-	public void addParticipation(Participation p){
-		this.listeParticipation.add(p) ;
-	}
-	
 
 	/*##############################################################################################
 								CALCUL 
@@ -64,10 +38,7 @@ public class Participant implements Parcelable{
 
 	public void calculEquiPersoTotal()
 	{
-		this.equilibrePersoTotal = 0;
-		for(Participation participation : this.listeParticipation )
-			this.equilibrePersoTotal += participation.getBalance();
-        System.out.println("NEW BALANCE for " + this.getName() + " : " + equilibrePersoTotal);
+
     }
 	
 
@@ -87,23 +58,19 @@ public class Participant implements Parcelable{
 		return mail;
 	}
 
-    public double getBudgetPersoTotal()
-    {
-        double budgetPersoTotal = 0;
-        for(Participation participation : this.listeParticipation )
-            budgetPersoTotal += participation.getMontant();
-        return budgetPersoTotal;
+    public double getBudgetPersoTotal(){
+        return 0;
     }
-	
-	public ArrayList<Participation> getListeParticipation() {
-		return listeParticipation;
-	}
-	
+
 	public double getEquiPersoTotal(){
 		return equilibrePersoTotal;
 	}
 
-	/*##############################################################################################
+    public long getId() {
+        return id;
+    }
+
+    /*##############################################################################################
 									MODIFICATEUR 
 	##############################################################################################*/
 
@@ -119,9 +86,15 @@ public class Participant implements Parcelable{
         this.telephone = telephone;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
+    public void setEquilibrePersoTotal(double equilibrePersoTotal) {
+        this.equilibrePersoTotal = equilibrePersoTotal;
+    }
 
-	/*##############################################################################################
+    /*##############################################################################################
 									DESCRIPTEUR 
 	##############################################################################################*/
 	
@@ -132,34 +105,25 @@ public class Participant implements Parcelable{
 				+ ", equilibrePersoTotal=" + equilibrePersoTotal + "]";
 	}
 
-	/*################################################################################################
-								COMPORTEMENT PARCELABLE
-	##################################################################################################*/
-
-
-    public final static Creator<Participant> CREATOR =
-            new Creator<Participant>()
-            {
-                public Participant createFromParcel(Parcel in) {
-                    return new Participant(in);
-                }
-
-                public Participant[] newArray(int size) {
-                    return new Participant[size];
-                }
-            };
-
+    /*################################################################################################
+                        RELATION D'ORDRE POUR COMPARAISON
+    ##################################################################################################*/
     @Override
-    public int describeContents() {
-        return 0;
+    public int compareTo(Object another) {
+        Double equiPart1 = ((Participant) another).getEquiPersoTotal();
+        Double equiPart2 = this.getEquiPersoTotal();
+        if (equiPart1<equiPart2)  return -1;
+        else if(equiPart1 == equiPart2) return 0;
+        else return 1;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.nom);
-        dest.writeString(this.telephone);
-        dest.writeString(this.mail);
-        dest.writeDouble(this.equilibrePersoTotal);
-        dest.writeTypedList(listeParticipation);
+    public Object clone() {
+        Participant participant = null;
+        try {
+            participant = (Participant) super.clone();
+        } catch(CloneNotSupportedException cnse) {
+            cnse.printStackTrace(System.err);
+        }
+        return participant;
     }
 }

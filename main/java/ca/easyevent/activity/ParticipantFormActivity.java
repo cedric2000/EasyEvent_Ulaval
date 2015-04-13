@@ -1,30 +1,30 @@
 package ca.easyevent.activity;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import ca.easyevent.R;
-import ca.easyevent.model.Evenement;
+import ca.easyevent.database.DAOParticipant;
 import ca.easyevent.model.Participant;
 
-public class ParticipantFormActivity extends ActionBarActivity {
+public class ParticipantFormActivity extends Activity {
 
     /*##############################################################################################
 									ATRIBUTS
 	###############################################################################################*/
 
     private Participant participant;
-    private Evenement evenement;
+    private long idEvenement;
 
     private EditText nameText, telText, mailText;
     private boolean editMode;
+
+    private DAOParticipant participantDAO;
 
 
     /*##############################################################################################
@@ -33,6 +33,7 @@ public class ParticipantFormActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.participants_form_activity);
 
@@ -40,16 +41,27 @@ public class ParticipantFormActivity extends ActionBarActivity {
         telText = (EditText)this.findViewById(R.id.tel_part_text);
         mailText = (EditText)this.findViewById(R.id.mail_part_text);
 
-        evenement = getIntent().getParcelableExtra("EVENEMENT");
+        participantDAO = new DAOParticipant(this);
 
-        String nameParticipant = getIntent().getStringExtra("NAME_PART");
-        if(nameParticipant.equals("")) {
+        long idParticipant = getIntent().getLongExtra("PARTICIPANT", -1);
+        System.out.println(idParticipant);
+        idEvenement = getIntent().getLongExtra("EVENEMENT", 0);
+
+        if(idParticipant != -1) {   //Edition d'un participant existant
+            participantDAO.open();
+            participant = participantDAO.getParticipant(idParticipant);
+
+            nameText.setText(this.participant.getName(), TextView.BufferType.EDITABLE);
+            telText.setText(this.participant.getTelephone(),TextView.BufferType.EDITABLE);
+            mailText.setText(this.participant.getMail()+"",TextView.BufferType.EDITABLE);
+
+            editMode = true;
+            participantDAO.close();
+        }
+
+        else {      //Nouveau Participant
             participant = new Participant();
             editMode = false;
-        }
-        else {
-            this.initFormWithParticipant(nameParticipant);
-            editMode = true;
         }
 
                 /*=============================
@@ -74,7 +86,8 @@ public class ParticipantFormActivity extends ActionBarActivity {
                 /*=============================
                       Button Submit
                 =============================*/
-        Button sendButton = (Button)findViewById(R.id.send);
+
+        TextView sendButton = (TextView)findViewById(R.id.send);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,36 +98,20 @@ public class ParticipantFormActivity extends ActionBarActivity {
     }
 
     /*##############################################################################################
-                                    INIT FORMULAIRE
-    ###############################################################################################*/
-
-    public void initFormWithParticipant(String name){
-        this.participant = evenement.getParticipant(name);
-
-        nameText.setText(this.participant.getName(), TextView.BufferType.EDITABLE);
-        telText.setText(this.participant.getTelephone(),TextView.BufferType.EDITABLE);
-        mailText.setText(this.participant.getMail()+"",TextView.BufferType.EDITABLE);
-    }
-
-
-    /*##############################################################################################
                                     SUBMIT FORM
     ###############################################################################################*/
 
     public void submitForm(){
-
-        Intent result = new Intent();
         participant.setNom(nameText.getText().toString());
         participant.setTelephone(telText.getText().toString());
         participant.setMail(mailText.getText().toString());
-        result.putExtra("EVENEMENT", evenement);
 
-        if(!editMode)
-            evenement.ajoutParticipant(participant);
+        participantDAO.open();
+        if(editMode)
+            participantDAO.updateParticipant(participant);
         else
-            result.putExtra("NAME_PART", participant.getName());
-        result.putExtra("EVENEMENT", evenement);
-        setResult(RESULT_OK, result);
+            participantDAO.addParticipant(idEvenement,participant);
+        participantDAO.close();
         finish();
     }
 }

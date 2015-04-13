@@ -3,6 +3,7 @@
     android:id="@+id/item_event"
     android:background="@drawable/card_background"
     android:orientation="vertical"
+    android:layout_marginBottom="8dp"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
 
@@ -79,7 +80,7 @@
 
         android:text="VOIR"
         android:textSize="14sp"
-        android:textColor="@drawable/text_color"
+        android:textColor="@drawable/text_color_dark"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import ca.easyevent.R;
-import ca.easyevent.model.Evenement;
+import ca.easyevent.database.DAOParticipant;
 import ca.easyevent.model.Participant;
 
 
@@ -20,10 +20,12 @@ public class ParticipantActivity extends ActionBarActivity {
 	###############################################################################################*/
 
     private Participant participant;
-    private Evenement evenement;
 
     private TextView nameText, telText, mailText;
     private static final int EDIT_PARTICIPANT = 101;
+
+    private DAOParticipant participantDAO;
+
 
     /*##############################################################################################
                                     CREATION
@@ -34,10 +36,13 @@ public class ParticipantActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.participant_activity);
 
-        evenement = getIntent().getParcelableExtra("EVENEMENT");
-        String nameParticipant = getIntent().getStringExtra("NAME_PART");
-        this.participant = evenement.getParticipant(nameParticipant);
+        participantDAO = new DAOParticipant(this);
 
+        long idParticipant = getIntent().getLongExtra("PARTICIPANT", 0);
+
+        participantDAO.open();
+        participant = participantDAO.getParticipant(idParticipant);
+        participantDAO.close();
 
         nameText = (TextView)this.findViewById(R.id.name_part_text);
         telText = (TextView)this.findViewById(R.id.tel_part_text);
@@ -48,14 +53,13 @@ public class ParticipantActivity extends ActionBarActivity {
         mailText.setText(this.participant.getMail()+"",TextView.BufferType.EDITABLE);
 
             //Button edition
-        final LinearLayout addFlottingButton = (LinearLayout)findViewById(R.id.edit_button_layout);
-        addFlottingButton.setOnClickListener(new View.OnClickListener() {
+        final LinearLayout editFlottingButton = (LinearLayout)findViewById(R.id.edit_button_layout);
+        editFlottingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ParticipantActivity.this, ParticipantFormActivity.class);
-                intent.putExtra("EVENEMENT", evenement);
-                intent.putExtra("NAME_PART", participant.getName());
-                startActivityForResult(intent, EDIT_PARTICIPANT);
+                intent.putExtra("PARTICIPANT", participant.getId());
+                startActivity(intent);
             }
         });
 
@@ -63,36 +67,22 @@ public class ParticipantActivity extends ActionBarActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addFlottingButton.performClick();
+                editFlottingButton.performClick();
             }
         });
     }
 
-    /*##############################################################################################
-                              COMPORTEMENT D'ACTIVITY
-    ###############################################################################################*/
+    protected  void onResume(){
+        super.onResume();
+        participantDAO.open();
+        long idParticipant = getIntent().getLongExtra("PARTICIPANT", 0);
+        participant = participantDAO.getParticipant(idParticipant);
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            evenement = data.getParcelableExtra("EVENEMENT");
+        nameText.setText(this.participant.getName(), TextView.BufferType.EDITABLE);
+        telText.setText(this.participant.getTelephone(),TextView.BufferType.EDITABLE);
+        mailText.setText(this.participant.getMail()+"",TextView.BufferType.EDITABLE);
 
-            String nameParticipant = data.getStringExtra("NAME_PART");
-            this.participant = evenement.getParticipant(nameParticipant);
-
-            nameText.setText(this.participant.getName(), TextView.BufferType.EDITABLE);
-            telText.setText(this.participant.getTelephone(),TextView.BufferType.EDITABLE);
-            mailText.setText(this.participant.getMail()+"",TextView.BufferType.EDITABLE);
-        }
+        participantDAO.close();
     }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(ParticipantActivity.this, ParticipantListActivity.class);
-        intent.putExtra("EVENEMENT", evenement);
-        startActivity(intent);
-    };
-
-
 
 }

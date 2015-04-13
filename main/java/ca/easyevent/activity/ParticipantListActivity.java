@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import ca.easyevent.R;
 import ca.easyevent.adapter.ParticipantAdapter;
 import ca.easyevent.adapter.ParticipantAdapterListener;
-import ca.easyevent.model.Evenement;
+import ca.easyevent.database.DAOParticipant;
 import ca.easyevent.model.Participant;
 
 public class ParticipantListActivity extends Activity implements ParticipantAdapterListener{
@@ -22,14 +22,13 @@ public class ParticipantListActivity extends Activity implements ParticipantAdap
 									ATTRIBUTS
 	###############################################################################################*/
 
-    private Evenement evenement;
     private ArrayList<Participant> listParticipant;
-
-    private static final int ADD_NEW_PARTICIPANT=100;
 
     private ParticipantAdapter adapter;
     private ListView list ;
 
+    private DAOParticipant participantDAO;
+    private long idEvenement ;
 
     /*##############################################################################################
                                     CREATION
@@ -41,23 +40,18 @@ public class ParticipantListActivity extends Activity implements ParticipantAdap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.participant_list_activity);
 
-        evenement = getIntent().getParcelableExtra("EVENEMENT");
-        listParticipant = evenement.getListeParticipant();
+        participantDAO = new DAOParticipant(this);
 
-        adapter = new ParticipantAdapter(this,listParticipant);
-        adapter.addListener(this);
 
-        list = (ListView)findViewById(R.id.listParticipant);
-        list.setAdapter(adapter);
 
         final LinearLayout addFlottingButton = (LinearLayout)findViewById(R.id.add_button_layout);
         addFlottingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ParticipantListActivity.this, ParticipantFormActivity.class);
-                intent.putExtra("EVENEMENT", evenement);
-                intent.putExtra("NAME_PART", "");
-                startActivityForResult(intent, ADD_NEW_PARTICIPANT);
+                intent.putExtra("EVENEMENT", idEvenement);
+                intent.putExtra("PARTICIPANT", -1);
+                startActivity(intent);
             }
         });
 
@@ -71,25 +65,18 @@ public class ParticipantListActivity extends Activity implements ParticipantAdap
     }
 
 
-    /*##############################################################################################
-                              COMPORTEMENT D'ACTIVITY
-    ###############################################################################################*/
+    protected  void onResume(){
+        super.onResume();
+        idEvenement = getIntent().getLongExtra("EVENEMENT", 0);
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            evenement = data.getParcelableExtra("EVENEMENT");
+        participantDAO.open();
+        listParticipant = participantDAO.getAllParticipants(idEvenement);
+        participantDAO.close();
 
-            listParticipant = evenement.getListeParticipant();
-            System.out.println("LIST : " + listParticipant);
-
-            adapter = new ParticipantAdapter(this,listParticipant);
-            adapter.addListener(this);
-
-            list = (ListView)findViewById(R.id.listParticipant);
-            list.setAdapter(adapter);
-        }
+        adapter = new ParticipantAdapter(this,listParticipant);
+        adapter.addListener(this);
+        list = (ListView)findViewById(R.id.listParticipant);
+        list.setAdapter(adapter);
     }
 
     /*##############################################################################################
@@ -99,16 +86,8 @@ public class ParticipantListActivity extends Activity implements ParticipantAdap
     @Override
     public void onClicParticipant(Participant item, int position) {
         Intent intent = new Intent(ParticipantListActivity.this, ParticipantActivity.class);
-        intent.putExtra("EVENEMENT", evenement);
-        intent.putExtra("NAME_PART", item.getName());
-        startActivityForResult(intent,0);
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(ParticipantListActivity.this, EvenementActivity.class);
-        intent.putExtra("EVENEMENT", evenement);
+        intent.putExtra("EVENEMENT", idEvenement);
+        intent.putExtra("PARTICIPANT", item.getId());
         startActivity(intent);
-    };
-
+    }
 }

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
 
     android:id="@+id/item_student"
-
+    android:background="@android:color/white"
     android:layout_width="match_parent"
-    android:layout_height="45dp"
-    android:paddingLeft="50dp"
-    android:paddingRight="50dp"
+    android:layout_height="60dp"
+    android:paddingLeft="60dp"
+    android:paddingRight="60dp"
 >
 
     <CheckBox
@@ -47,6 +46,7 @@
         android:id="@+id/montant_participation"
 
         android:text="200"
+        android:textColor="@color/text_dark"
         android:textSize="14sp"
         android:fontFamily="sans-serif"
         android:textStyle="normal"
@@ -55,7 +55,9 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/devise"
         android:layout_centerVertical="true"
-        android:paddingTop="10dp"
+
+        android:background="@drawable/edit_text"
+        android:paddingBottom="5dp"
         android:gravity="center"
     />
 

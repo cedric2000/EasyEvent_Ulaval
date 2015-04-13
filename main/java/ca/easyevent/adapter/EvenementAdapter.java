@@ -67,7 +67,7 @@ public class EvenementAdapter extends ArrayAdapter<Evenement>
 
         ViewHolder holder = (ViewHolder) childView.getTag();
         holder.nameEventText.setText(listEvenement.get(position).getTitre());
-        holder.dateEventText.setText(listEvenement.get(position).getDateDebut().toStringDate() + "  - " +
+        holder.dateEventText.setText(listEvenement.get(position).getDateDebut().toString() + "  - " +
                 listEvenement.get(position).getDateFin());
         holder.placeEventText.setText(listEvenement.get(position).getLieu());
 /*

@@ -1,12 +1,255 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context="ca.easyevent.activity.EvenementFormActivity">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
+    <!--tool bar-->
+    <RelativeLayout
+        android:id="@+id/toolBar"
+        android:orientation="horizontal"
+        android:background="@drawable/background_shadow"
+        android:layout_width="fill_parent"
+        android:layout_height="56dp"
+        >
+
+        <TextView
+            android:id="@+id/send"
+            android:background="@android:color/transparent"
+
+            android:text="VALIDER"
+            android:textSize="14sp"
+            android:textColor="@drawable/text_color_light"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginRight="16dp"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/image_layout"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:background="@color/main_light"
+        android:layout_below="@+id/toolBar">
+
+        <ImageView
+            android:id="@+id/contactImageView"
+            android:src="@drawable/luggage"
+            android:tint="@android:color/white"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:padding="0dp"
+            android:layout_margin="0dp"/>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/lineTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/image_layout"
+        android:background="@android:color/darker_gray" />
+
+    <View
+        android:id="@+id/subTitleText"
+        android:background="#FFFFFF"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/lineTitle"/>
+
+
+    <LinearLayout
+        android:id="@+id/choose_photo_layout"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+
+        android:layout_alignBottom="@id/lineTitle"
+
+        android:layout_marginBottom="-25dp"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/flotting_btn">
+
+        <ImageButton
+
+            android:id="@+id/choose_photo"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="fitXY"
+            android:layout_gravity="center"
+            android:layout_marginLeft="12dp"
+            android:src="@drawable/camera"
+            android:tint="@android:color/white"
+            android:background="@color/accent_regular"/>
+    </LinearLayout>
+
+    
+    <!--Libelle-->
+    <LinearLayout
+        android:id="@+id/titre_event"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/subTitleText">
+
+        <EditText
+            android:id="@+id/titre_event_text"
+
+            android:singleLine="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="Titre Evenement"
+
+            android:background="@drawable/edit_text"
+            android:paddingBottom="5dp"
+            android:textColor="@color/text_dark"
+            android:textSize="@dimen/text_size_headline"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+            />
+    </LinearLayout>
+
+    <!--Date Debut-->
+    <LinearLayout
+        android:id="@+id/date_debut_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="24dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/titre_event">
+
+        <ImageView
+            android:id="@+id/date_event_icon"
+
+            android:src="@drawable/calendar"
+            android:scaleType="centerCrop"
+            android:tint="@color/main_dark"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/date_debut_event_text"
+            android:singleLine="true"
+
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:hint="Date Debut"
+            android:background="@drawable/edit_text"
+            android:paddingBottom="5dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="6dp"
+            android:textColor="@color/text_dark"
+            android:textSize="@dimen/text_size_body"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+
+            android:onClick="showDatePickerDialog"
+            />
+
+    </LinearLayout>
+
+    <!--DateFin-->
+    <LinearLayout
+        android:id="@+id/date_fin_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="24dp"
+
+        android:orientation="horizontal"
+        android:layout_below="@+id/titre_event"
+        android:layout_toRightOf="@+id/date_debut_event">
+
+        <TextView
+            android:id="@+id/date_fin_event_text"
+
+            android:singleLine="true"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:hint="Date Fin"
+            android:background="@drawable/edit_text"
+            android:paddingBottom="5dp"
+            android:textColor="@color/text_dark"
+            android:textSize="@dimen/text_size_body"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+            android:onClick="showDatePickerDialog"
+
+            android:inputType="none"
+            />
+    </LinearLayout>
+
+
+    <!--Place-->
+    <LinearLayout
+        android:id="@+id/place_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="24dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/date_fin_event">
+
+        <ImageView
+            android:id="@+id/place_event_icon"
+
+            android:src="@drawable/map"
+            android:scaleType="centerCrop"
+            android:tint="@color/main_dark"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            />
+
+        <EditText
+            android:id="@+id/place_event_text"
+
+            android:singleLine="true"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:hint="Lieu"
+
+            android:background="@drawable/edit_text"
+            android:paddingBottom="5dp"
+
+            android:textColor="@color/text_dark"
+            android:textSize="@dimen/text_size_body"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+
+            android:inputType="text"
+            />
+
+    </LinearLayout>
+    
 
 </RelativeLayout>

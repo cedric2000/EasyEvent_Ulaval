@@ -5,12 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import ca.easyevent.R;
+import ca.easyevent.database.DAOParticipant;
 import ca.easyevent.model.Participation;
 
 
@@ -24,6 +26,7 @@ public class ParticipationFormAdapter extends ArrayAdapter<Participation>{
     private Activity activity;
     private ArrayList<ParticipationAdapterListener> listListener = new ArrayList<>();
 
+    private DAOParticipant participantDAO;
 
     /*##############################################################################################
 									CONSTRUCTEUR
@@ -34,6 +37,8 @@ public class ParticipationFormAdapter extends ArrayAdapter<Participation>{
         super(activity, R.layout.participation_maj_item, inParticipationList);
         this.activity = activity;
         this.participationList=inParticipationList;
+        participantDAO = new DAOParticipant(activity);
+        participantDAO.open();
     }
 
 
@@ -65,22 +70,32 @@ public class ParticipationFormAdapter extends ArrayAdapter<Participation>{
 
         final ViewHolder holder = (ViewHolder) childView.getTag();
 
-        holder.checkBox.setChecked(false);
-        holder.nameParticipation.setText(participationList.get(position).getParticipant().getName());
-        holder.montantParticipation.setText(participationList.get(position).getMontant()+"");
+        Participation participation = participationList.get(position);
+        String participantName = participantDAO.getParticipant(participation.getIdParticipant()).getName();
 
+        holder.checkBox.setChecked(participation.isSelected());
+        holder.nameParticipation.setText(participantName);
+        holder.montantParticipation.setText(participation.getMontant()+"");
+
+        final int pos = position;
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    participationList.get(pos).setSelected(isChecked);
+                    sendListener();
+            }
+        });
         holder.montantParticipation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                 @Override
-                 public void onFocusChange(View v, boolean hasFocus) {
-                     if (!hasFocus){
-                         Integer position = (Integer)v.getTag();
-                         participationList.get(position).setMontant(
-                                 Double.valueOf(holder.montantParticipation.getText().toString())
-                             );
-                         sendListener();
-                     }
-                 }
-             });
+             @Override
+             public void onFocusChange(View v, boolean hasFocus) {
+             if (!hasFocus){
+                 participationList.get(pos).setMontant(
+                         Double.valueOf(holder.montantParticipation.getText().toString())
+                     );
+                 sendListener();
+             }
+             }
+         });
         return childView;
     }
 
