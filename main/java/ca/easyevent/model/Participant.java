@@ -1,6 +1,6 @@
 package ca.easyevent.model;
 
-public class Participant implements Comparable{
+public class Participant implements Cloneable, Comparable{
 
 
 	/*##############################################################################################
@@ -10,10 +10,12 @@ public class Participant implements Comparable{
     private long id;
 	private String nom = new String(""); 
 	private String telephone = new String(""); 
-	private String mail = new String(""); 
+	private String mail = new String("");
+    private String image = new String("default");
 
-	private double equilibrePersoTotal = 0;
-	
+    private double equilibrePersoTotal = 0;
+
+    private boolean isSelected =false;
 
 	/*##############################################################################################
 									CONSTRUCTEUR
@@ -30,17 +32,6 @@ public class Participant implements Comparable{
 		this.telephone = telephone;
 		this.mail = mail;
 	}
-
-
-	/*##############################################################################################
-								CALCUL 
-	##############################################################################################*/
-
-	public void calculEquiPersoTotal()
-	{
-
-    }
-	
 
 	/*##############################################################################################
 									ACCESSEUR 
@@ -70,6 +61,14 @@ public class Participant implements Comparable{
         return id;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
     /*##############################################################################################
 									MODIFICATEUR 
 	##############################################################################################*/
@@ -92,6 +91,14 @@ public class Participant implements Comparable{
 
     public void setEquilibrePersoTotal(double equilibrePersoTotal) {
         this.equilibrePersoTotal = equilibrePersoTotal;
+    }
+
+    public void setSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     /*##############################################################################################

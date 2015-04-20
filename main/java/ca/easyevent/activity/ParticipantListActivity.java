@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -42,9 +41,7 @@ public class ParticipantListActivity extends Activity implements ParticipantAdap
 
         participantDAO = new DAOParticipant(this);
 
-
-
-        final LinearLayout addFlottingButton = (LinearLayout)findViewById(R.id.add_button_layout);
+        final View addFlottingButton = findViewById(R.id.add_button);
         addFlottingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,14 +49,6 @@ public class ParticipantListActivity extends Activity implements ParticipantAdap
                 intent.putExtra("EVENEMENT", idEvenement);
                 intent.putExtra("PARTICIPANT", -1);
                 startActivity(intent);
-            }
-        });
-
-        ImageView addButton = (ImageView)findViewById(R.id.add_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addFlottingButton.performClick();
             }
         });
     }
@@ -77,6 +66,16 @@ public class ParticipantListActivity extends Activity implements ParticipantAdap
         adapter.addListener(this);
         list = (ListView)findViewById(R.id.listParticipant);
         list.setAdapter(adapter);
+
+        TextView emptyEvent = (TextView)this.findViewById(R.id.part_empty);
+        if(adapter.getCount()<1){
+            emptyEvent.setVisibility(View.VISIBLE);
+            list.setVisibility(View.GONE);
+        }
+        else{
+            emptyEvent.setVisibility(View.GONE);
+            list.setVisibility(View.VISIBLE);
+        }
     }
 
     /*##############################################################################################

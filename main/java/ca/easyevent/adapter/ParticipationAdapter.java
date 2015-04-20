@@ -34,7 +34,6 @@ public class ParticipationAdapter extends ArrayAdapter<Participation>{
         this.activity = activity;
         this.participationList=inParticipationList;
         participantDAO = new DAOParticipant(activity);
-        participantDAO.open();
     }
 
 
@@ -64,7 +63,9 @@ public class ParticipationAdapter extends ArrayAdapter<Participation>{
 
         ViewHolder holder = (ViewHolder) childView.getTag();
         Participation participation = participationList.get(position);
-        String participantName = participantDAO.getParticipant(participation.getId()).getName();
+        participantDAO.open();
+        String participantName = participantDAO.getParticipant(participation.getIdParticipant()).getName();
+        participantDAO.close();
 
         holder.nameParticipation.setText(participantName);
         holder.montantParticipation.setText(participation.getMontant()+"");

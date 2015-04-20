@@ -16,4 +16,7 @@
     <string name="title_activity_participant">ParticipantActivity</string>
     <string name="title_activity_see_resume">SeeResume</string>
 
+    <string name="API_BASE">http://gif3101-tp.gel.ulaval.ca</string>
+    <string name="API_FORMAT">/api/v1/</string>
+
 </resources>

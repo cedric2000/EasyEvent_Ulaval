@@ -15,6 +15,7 @@ public class Evenement implements Comparable
     private long id;
     private String titre, lieu;
     private DateModifiable dateDebut, dateFin;
+    private String image = new String("default");
 
 	private ArrayList<Depense> listDepense = new ArrayList<>();
 	private ArrayList<Participant> listeParticipant = new ArrayList<>();
@@ -60,6 +61,10 @@ public class Evenement implements Comparable
         return id;
     }
 
+    public String getImage() {
+        return image;
+    }
+
     /*################################################################################################
 								MODIFICATEUR
 	##################################################################################################*/
@@ -84,6 +89,9 @@ public class Evenement implements Comparable
         this.id = id;
     }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     /*################################################################################################
 								DESCRIPTEUR

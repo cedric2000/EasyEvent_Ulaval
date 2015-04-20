@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white"
     tools:context="ca.easyevent.activity.DepenseListActivity">
@@ -53,31 +53,36 @@
         android:layout_height="wrap_content"
         android:divider="@color/text_light"
         android:dividerHeight="1dip"
+        android:visibility="gone"
         android:background="#FFFFFF"
         android:layout_below="@+id/lineTitle" >
     </ListView>
 
-    <LinearLayout
-        android:id="@+id/add_button_layout"
+    <TextView
+        android:id="@+id/dep_empty"
+
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+
+        android:gravity="center"
+        android:background="@android:color/white"
+
+        android:text="Commencer par ajouter une dépense"
+        android:textColor="@color/text_regular"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        android:textStyle="normal"
+        android:layout_below="@+id/lineTitle"
+        />
+
+    <View
+        android:id="@+id/add_button"
         android:layout_width="48dp"
         android:layout_height="48dp"
-
         android:layout_alignBottom="@id/titleDepenseText"
 
         android:layout_marginBottom="-25dp"
         android:layout_marginLeft="16dp"
-        android:background="@drawable/flotting_btn">
-
-        <ImageButton
-            android:id="@+id/add_button"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:scaleType="fitXY"
-            android:layout_gravity="center"
-            android:layout_marginLeft="12dp"
-            android:src="@drawable/plus"
-            android:tint="@android:color/white"
-            android:background="@android:color/transparent"/>
-    </LinearLayout>
+        android:background="@drawable/flotting_btn_plus"/>
 
 </RelativeLayout>

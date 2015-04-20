@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:id="@+id/item_student"
+
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    tools:context=".SendResumeActivity"
+    >
+
+    <!-- The avatar -->
+    <LinearLayout
+        android:id="@+id/contactLayout"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/round_icon"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/contactImageView"
+            android:src="@drawable/contacts"
+            android:tint="@android:color/white"
+
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+
+            android:layout_gravity="center"
+            android:layout_marginLeft="9dp"
+
+            android:scaleType="centerCrop" />
+    </LinearLayout>
+
+
+    <!-- The 2-row textual layout
+    <LinearLayout
+        android:id="@+id/textLayout"
+
+        android:layout_toRightOf="@+id/contactLayout"
+
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+
+        android:paddingLeft="16dp"
+        android:layout_centerVertical="true">
+-->
+    <!-- First row -->
+    <TextView
+        android:id="@+id/nameParticipantText"
+
+        android:text="Louis"
+        android:textSize="16sp"
+        android:textColor="@color/text_dark"
+        android:fontFamily="sans-serif"
+        android:textStyle="normal"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/contactLayout"
+        android:layout_centerVertical="true"
+
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginLeft="16dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/goToParticipantLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+
+        android:paddingTop="8dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:id="@+id/smsIcon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:scaleType="fitXY"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:src="@drawable/sms"
+            android:tint="@color/text_regular"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

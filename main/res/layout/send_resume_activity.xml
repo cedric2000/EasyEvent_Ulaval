@@ -1,12 +1,78 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="ca.easyevent.activity.SendResumeActivity">
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    android:id="@+id/item_student"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SendResumeActivity"
+    >
+
+
+
+    <LinearLayout
+        android:id="@+id/toolBar"
+        android:orientation="horizontal"
+        android:background="@color/main_regular"
+        android:layout_width="fill_parent"
+        android:layout_height="56dp"
+        >
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/titleText"
+
+        android:text="Envoie Rapport"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="normal"
+        android:fontFamily="sans-serif"
+
+        android:gravity="center_vertical"
+        android:paddingLeft="72dp"
+        android:background="@drawable/background_shadow"
+        android:layout_width="fill_parent"
+        android:layout_height="72dp"
+        android:layout_below="@+id/toolBar"
+        />
+
+    <View
+        android:id="@+id/subTitleParticipantText"
+        android:background="#FFFFFF"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/titleText"
+        />
+
+    <View
+        android:id="@+id/lineTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/subTitleParticipantText"
+        android:background="@color/text_light" />
+
+    <ListView
+        android:id="@+id/listParticipant"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/text_light"
+        android:dividerHeight="1dip"
+        android:background="#FFFFFF"
+        android:layout_below="@+id/lineTitle">
+    </ListView>
+
+    <View
+        android:id="@+id/send_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+
+        android:layout_alignBottom="@id/titleText"
+
+        android:layout_marginBottom="-25dp"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/flotting_btn_send"/>
 
 </RelativeLayout>

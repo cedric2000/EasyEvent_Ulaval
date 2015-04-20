@@ -14,7 +14,6 @@
 
         <ImageView
             android:id="@+id/eventCover"
-            android:src="@drawable/chalet"
 
             android:layout_width="fill_parent"
             android:layout_height="250dp"
@@ -77,10 +76,9 @@
             android:layout_below="@+id/desc_event_layout"
             />
 
-        <!--Edit Button -->
-        <LinearLayout
-            android:id="@+id/edit_button_layout"
 
+        <View
+            android:id="@+id/edit_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
 
@@ -90,20 +88,9 @@
 
             android:layout_marginBottom="-25dp"
             android:layout_marginRight="16dp"
-            android:background="@drawable/flotting_btn">
+            android:background="@drawable/flotting_btn_edit"/>
 
-            <ImageButton
 
-                android:id="@+id/edit_button"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:scaleType="fitXY"
-                android:layout_gravity="center"
-                android:layout_marginLeft="12dp"
-                android:src="@drawable/edit"
-                android:tint="@android:color/white"
-                android:background="@color/accent_regular"/>
-        </LinearLayout>
 
         <!--Participant -->
         <RelativeLayout
@@ -611,10 +598,10 @@
 
 
             <TextView
-                android:id="@+id/button_see_rap"
+                android:id="@+id/button_send_rap"
                 android:background="@android:color/white"
 
-                android:text="VOIR"
+                android:text="ENVOYER"
                 android:textSize="14sp"
                 android:textColor="@drawable/text_color_dark"
 
@@ -629,26 +616,6 @@
                 android:paddingBottom="8dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginRight="16dp"/>
-
-            <TextView
-                android:id="@+id/button_send_rap"
-                android:background="@android:color/white"
-
-                android:text="ENVOYER"
-                android:textSize="14sp"
-                android:textColor="@drawable/text_color_dark"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/button_see_rap"
-                android:layout_below="@+id/rap_card_line"
-
-                android:paddingTop="8dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="8dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginRight="8dp"/>
 
         </RelativeLayout>
 

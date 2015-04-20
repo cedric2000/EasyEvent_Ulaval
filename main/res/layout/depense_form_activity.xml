@@ -34,6 +34,24 @@
             android:paddingBottom="10dp"
             android:layout_marginRight="16dp"/>
 
+        <TextView
+            android:id="@+id/delete"
+            android:background="@android:color/transparent"
+
+            android:text="SUPRIMER"
+            android:textSize="14sp"
+            android:textColor="@drawable/text_color_light"
+
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/send"
+
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"/>
+
     </RelativeLayout>
 
     <!--main title-->
@@ -102,7 +120,26 @@
             android:fontFamily="sans-serif"
             android:textStyle="normal"
             />
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/lib_error"
+        android:layout_below="@+id/lib_dep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:background="@android:color/white"
+
+        android:paddingTop="@dimen/padding_error_top"
+        android:visibility="gone"
+        android:text="obligatoire"
+        android:textColor="@color/text_error"
+        android:textSize="@dimen/text_size_body"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="normal"
+    />
+
 
     <!--Date-->
     <LinearLayout
@@ -113,7 +150,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginLeft="24dp"
         android:orientation="horizontal"
-        android:layout_below="@+id/lib_dep">
+        android:layout_below="@+id/lib_error">
 
         <ImageView
             android:id="@+id/date_dep_icon"
@@ -148,14 +185,33 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/date_error"
+        android:layout_below="@+id/date_dep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:background="@android:color/white"
+
+        android:paddingTop="@dimen/padding_error_top"
+        android:visibility="gone"
+        android:text="obligatoire"
+        android:textColor="@color/text_error"
+        android:textSize="@dimen/text_size_body"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="normal"
+        />
+
+
+
     <!--Montant-->
     <LinearLayout
         android:id="@+id/budget_tot_dep"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
 
         android:layout_marginTop="5dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginRight="16dp"
         android:orientation="horizontal"
         android:layout_below="@+id/subTitleText"
         android:layout_alignParentRight="true">
@@ -182,9 +238,9 @@
 
             android:background="@android:color/white"
 
-            android:text="0 $"
+            android:text="0"
             android:textColor="@color/text_dark"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:fontFamily="sans-serif"
             android:textStyle="normal"
             />
@@ -200,7 +256,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="24dp"
         android:orientation="horizontal"
-        android:layout_below="@+id/date_dep">
+        android:layout_below="@+id/date_error">
 
         <ImageView
             android:id="@+id/part_dep_icon"
@@ -248,17 +304,21 @@
     <RelativeLayout
         android:id="@+id/menu_participation"
         android:layout_width="fill_parent"
-        android:layout_height="45dp"
-        android:paddingLeft="50dp"
-        android:paddingRight="65dp"
+        android:layout_height="wrap_content"
 
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="50dp"
         android:orientation="horizontal"
         android:layout_below="@+id/line_part">
 
         <TextView
+            android:id="@+id/concerne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
 
             android:background="@android:color/white"
 
@@ -269,14 +329,32 @@
             android:textStyle="normal"
             />
 
+        <TextView
+            android:id="@+id/nb_participant_error"
+            android:layout_below="@+id/concerne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+
+            android:visibility="gone"
+
+            android:paddingTop="@dimen/padding_error_top"
+            android:layout_marginRight="10dp"
+            android:text="Au moins 2 participants"
+            android:textColor="@color/text_error"
+            android:textSize="10dip"
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="normal"
+         />
 
         <TextView
+            android:id="@+id/paye"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
 
+            android:layout_marginEnd="20dp"
             android:background="@android:color/white"
 
             android:text="A payé"
@@ -284,7 +362,30 @@
             android:textSize="12sp"
             android:fontFamily="sans-serif"
             android:textStyle="normal"
-            />
+         />
+
+        <TextView
+            android:id="@+id/montant_error"
+
+            android:layout_below="@+id/paye"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:visibility="gone"
+
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingTop="@dimen/padding_error_top"
+            android:background="@android:color/white"
+
+            android:text="Au moins un payeur"
+            android:textColor="@color/text_error"
+            android:textSize="10dip"
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="normal"
+        />
+
 
     </RelativeLayout>
 

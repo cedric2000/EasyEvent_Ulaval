@@ -97,7 +97,7 @@ public class DAODepense extends DataAccessObject {
         Cursor cursor = database.query(
                 DataBaseHandler.DEPENSE_NAME_TABLE,
                 DataBaseHandler.DEPENSE_COLONNE,
-                DataBaseHandler.EVENT_ID + " = ?",
+                DataBaseHandler.DEPENSE_ID + " = ?",
                 new String[] {String.valueOf(idDepense)}, null, null, null);
         cursor.moveToFirst();
         Depense d;
@@ -127,6 +127,9 @@ public class DAODepense extends DataAccessObject {
         cursor.close();
         return depenses;
     }
+
+
+
 
     /*##############################################################################################
                                 ACCESSEUR

@@ -10,14 +10,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
-
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by Cédric on 02/04/2015.
@@ -47,8 +40,8 @@ public class ImageManager {
     ###############################################################################################*/
 
     public Drawable getResizeImage (int imageID) {
-        //Get device dimensions
 
+        //Get device dimensions
         BitmapDrawable bd=(BitmapDrawable) context.getResources().getDrawable(imageID);
         double imageHeight = bd.getBitmap().getHeight();
         double imageWidth = bd.getBitmap().getWidth();
@@ -128,32 +121,6 @@ public class ImageManager {
     /*##############################################################################################
                                     FICHIER IMAGE
     ###############################################################################################*/
-
-    public static Uri getOutputMediaFileUri(String directoryName) {
-        return Uri.fromFile(getOutputMediaFile(directoryName));
-    }
-
-    public static File getOutputMediaFile(String directoryName) {
-
-        // External sdcard location
-        File mediaStorageDir = new File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                directoryName);
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                Log.d(directoryName, "Oops! Failed create "+ directoryName + " directory");
-                return null;
-            }
-        }
-
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",Locale.getDefault()).format(new Date());
-        File mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
-
-        return mediaFile;
-    }
 
     public static String getPath(Uri uri, Activity activity) {
         String[] projection = { MediaStore.MediaColumns.DATA };

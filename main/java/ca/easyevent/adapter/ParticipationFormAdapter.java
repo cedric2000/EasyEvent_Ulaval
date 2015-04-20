@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -48,7 +47,7 @@ public class ParticipationFormAdapter extends ArrayAdapter<Participation>{
 
     static class ViewHolder {
         public CheckBox checkBox;
-        public TextView nameParticipation;
+        public TextView nameParticipation, deviseSign;
         public EditText montantParticipation;
     }
 
@@ -65,37 +64,63 @@ public class ParticipationFormAdapter extends ArrayAdapter<Participation>{
             viewHolder.checkBox = (CheckBox) childView.findViewById(R.id.checkBox);
             viewHolder.nameParticipation = (TextView) childView.findViewById(R.id.nameParticipationText);
             viewHolder.montantParticipation = (EditText) childView.findViewById(R.id.montant_participation);
+            viewHolder.deviseSign = (TextView) childView.findViewById(R.id.devise);
             childView.setTag(viewHolder);
         }
 
         final ViewHolder holder = (ViewHolder) childView.getTag();
 
         Participation participation = participationList.get(position);
-        String participantName = participantDAO.getParticipant(participation.getIdParticipant()).getName();
+        final String participantName = participantDAO.getParticipant(participation.getIdParticipant()).getName();
 
         holder.checkBox.setChecked(participation.isSelected());
         holder.nameParticipation.setText(participantName);
         holder.montantParticipation.setText(participation.getMontant()+"");
 
-        final int pos = position;
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    participationList.get(pos).setSelected(isChecked);
-                    sendListener();
-            }
-        });
+        if (holder.checkBox.isChecked()) {
+            participationList.get(position).setSelected(true);
+            holder.montantParticipation.setVisibility(View.VISIBLE);
+            holder.deviseSign.setVisibility(View.VISIBLE);
+        }
+        else{
+            participationList.get(position).setSelected(false);
+            holder.montantParticipation.setVisibility(View.GONE);
+            holder.deviseSign.setVisibility(View.GONE);
+        }
+
+        holder.checkBox.setTag(position);
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               int pos = (int)holder.checkBox.getTag();
+               if (holder.checkBox.isChecked()) {
+                   participationList.get(pos).setSelected(true);
+                   holder.montantParticipation.setVisibility(View.VISIBLE);
+                   holder.deviseSign.setVisibility(View.VISIBLE);
+               }
+               else{
+                   participationList.get(pos).setSelected(false);
+                   holder.montantParticipation.setVisibility(View.GONE);
+                   holder.deviseSign.setVisibility(View.GONE);
+               }
+               sendListener();
+           }
+       });
+
+        holder.montantParticipation.setTag(position);
         holder.montantParticipation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
              @Override
              public void onFocusChange(View v, boolean hasFocus) {
-             if (!hasFocus){
-                 participationList.get(pos).setMontant(
-                         Double.valueOf(holder.montantParticipation.getText().toString())
-                     );
-                 sendListener();
-             }
+                 if (!hasFocus){
+                     int pos = (int)v.getTag();
+                     participationList.get(pos).setMontant(
+                             Double.valueOf(holder.montantParticipation.getText().toString())
+                         );
+                     sendListener();
+                 }
              }
          });
+
         return childView;
     }
 

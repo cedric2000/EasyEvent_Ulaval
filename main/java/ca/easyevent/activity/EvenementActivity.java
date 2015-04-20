@@ -1,8 +1,11 @@
 package ca.easyevent.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,6 +21,8 @@ import ca.easyevent.database.DAOParticipant;
 import ca.easyevent.model.Depense;
 import ca.easyevent.model.Evenement;
 import ca.easyevent.model.Participant;
+import ca.easyevent.model.Rapport;
+import ca.easyevent.utils.ImageManager;
 
 
 public class EvenementActivity extends ActionBarActivity {
@@ -28,6 +33,8 @@ public class EvenementActivity extends ActionBarActivity {
 
     private Evenement evenement;
     private DAOEvenement evenementDAO;
+    private ArrayList<Participant> listParticipant;
+    private ArrayList<Depense> listDepense;
 
     /*##############################################################################################
 									CREATION
@@ -37,6 +44,7 @@ public class EvenementActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_activity);
+
 
         initButtons();
     }
@@ -58,18 +66,45 @@ public class EvenementActivity extends ActionBarActivity {
                                     INIT VIEW
     ###############################################################################################*/
 
+
+
     public void initView(){
         TextView titreText = (TextView)findViewById(R.id.nameEventText),
                 dateText = (TextView)findViewById(R.id.date_event);
 
              //Evenement
         titreText.setText(evenement.getTitre());
-        dateText.setText(evenement.getDateDebut().toString());
 
+        String date;
+        if(evenement.getDateFin() != null && !evenement.getDateFin().equals(""))
+            date = "Du " + evenement.getDateDebut().toString() +
+                    " Au " +evenement.getDateFin();
+        else
+            date = "Le " + evenement.getDateDebut().toString();
+        dateText.setText(date);
+
+        initImage();
         initParticipantCard();
         initDepenseCard();
         initRapportCard();
         initLieuCard();
+    }
+
+
+    public void initImage() {
+        ImageView imageView = (ImageView)findViewById(R.id.eventCover);
+        if (evenement.getImage() != null && !evenement.getImage().equals("default")) {
+            Display display = getWindowManager().getDefaultDisplay();
+            double deviceWidth = display.getWidth();
+
+            ImageManager imageManager = new ImageManager(this, deviceWidth);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+
+            Bitmap bitmap = BitmapFactory.decodeFile(evenement.getImage(), options);
+            imageView.setImageDrawable(imageManager.getResizeImage(bitmap, options));
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        } else
+            imageView.setVisibility(View.GONE);
     }
 
     public void initParticipantCard(){
@@ -80,7 +115,7 @@ public class EvenementActivity extends ActionBarActivity {
                 
         DAOParticipant participantDAO = new DAOParticipant(this);
         participantDAO.open();
-        ArrayList<Participant> listParticipant = participantDAO.getAllParticipants(evenement.getId());
+        listParticipant = participantDAO.getAllParticipants(evenement.getId());
         participantDAO.close();
         if(listParticipant.size() < 2){
             bestPartLayout.setVisibility(View.GONE);
@@ -97,9 +132,9 @@ public class EvenementActivity extends ActionBarActivity {
                     worstPartEquiText= (TextView)findViewById(R.id.worst_part_budget);
             
             bestPartNameText.setText(listParticipant.get(0).getName());
-            bestPartEquiText.setText(listParticipant.get(0).getEquiPersoTotal()+" $");
+            bestPartEquiText.setText(((int)listParticipant.get(0).getEquiPersoTotal())+" $");
             worstPartNameText.setText(listParticipant.get(listParticipant.size()-1).getName());
-            worstPartEquiText.setText(listParticipant.get(listParticipant.size()-1).getEquiPersoTotal()+" $");
+            worstPartEquiText.setText(((int)listParticipant.get(listParticipant.size()-1).getEquiPersoTotal())+" $");
             
             bestPartLayout.setVisibility(View.VISIBLE);
             worstPartLayout.setVisibility(View.VISIBLE);
@@ -114,7 +149,7 @@ public class EvenementActivity extends ActionBarActivity {
 
         DAODepense depenseDAO = new DAODepense(this);
         depenseDAO.open();
-        ArrayList<Depense> listDepense = depenseDAO.getAllDepenses(evenement.getId());
+        listDepense = depenseDAO.getAllDepenses(evenement.getId());
         depenseDAO.close();
         if(listDepense.isEmpty()){
             budgDepLayout.setVisibility(View.GONE);
@@ -136,10 +171,17 @@ public class EvenementActivity extends ActionBarActivity {
     }
 
     public void initRapportCard(){
-
-        TextView desequiText = (TextView)findViewById(R.id.desequi_rap);
-        desequiText.setText("200 $");
-
+        TextView desequiText = (TextView)findViewById(R.id.rap_card_empty);
+        TextView buttonSendRapport = (TextView)findViewById(R.id.button_send_rap);
+        if(this.listParticipant.size()<2 || this.listDepense.isEmpty()) {
+            desequiText.setText("Pas assez de données");
+            buttonSendRapport.setVisibility(View.GONE);
+        }
+        else{
+            Rapport rapport = new Rapport(this.listParticipant);
+            desequiText.setText(rapport.toString());
+            buttonSendRapport.setVisibility(View.VISIBLE);
+        }
     }
 
     public void initLieuCard(){
@@ -155,7 +197,6 @@ public class EvenementActivity extends ActionBarActivity {
     private void initButtons(){
         TextView buttonParticipants = (TextView)findViewById(R.id.button_participant),
                 buttonDepenses = (TextView)findViewById(R.id.button_depenses),
-                buttonSeeRapport = (TextView)findViewById(R.id.button_see_rap),
                 buttonSendRapport = (TextView)findViewById(R.id.button_send_rap),
                 buttonPlace = (TextView)findViewById(R.id.button_place);
 
@@ -165,20 +206,13 @@ public class EvenementActivity extends ActionBarActivity {
         buttonSendRapport.setOnClickListener(new ButtonListener(SendResumeActivity.class));
 
             //Button edition
-        final LinearLayout editFlottingButton = (LinearLayout)findViewById(R.id.edit_button_layout);
+        final View editFlottingButton = findViewById(R.id.edit_button);
         editFlottingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EvenementActivity.this, EvenementFormActivity.class);
                 intent.putExtra("EVENEMENT", evenement.getId());
                 startActivity(intent);
-            }
-        });
-        ImageView addButton = (ImageView)findViewById(R.id.edit_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editFlottingButton.performClick();
             }
         });
     }

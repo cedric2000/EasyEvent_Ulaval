@@ -60,36 +60,35 @@ public class Rapport {
     }
 
 	/*##############################################################################################
-		Genere les dettes sur les doublons
+		                Genere les dettes sur les doublons
 	###############################################################################################*/
 
     public void equilibreDoublon(){
 
-        ArrayList<Participant> 	listPartPos = new ArrayList<Participant>(),
-                listPartNeg = new ArrayList<Participant>();
-
-        for(Participant participant : this.listParticipant){
-            if(participant.getEquiPersoTotal()>=0)
-                listPartPos.add(participant);
-            else
-                listPartNeg.add(participant);
-        }
-
-        for(Participant pPos : listPartPos){
-            for(int i=0;i<listPartNeg.size(); i++){
-
-                Participant pNeg = listPartNeg.get(i);
-
-                if(pPos.getEquiPersoTotal() == -pNeg.getEquiPersoTotal()){
-                    listDette.add(new Dette(pPos, pNeg, pPos.getEquiPersoTotal()));
-                    this.listParticipant.remove(pPos);
-                    listPartPos.remove(pPos);
-                    this.listParticipant.remove(pNeg);
-                    listPartNeg.remove(pNeg);
+        Participant p = this.listParticipant.get(0);
+        int i=0;
+        while (p != null && p.getEquiPersoTotal()>0){
+            int indexFind = -1;
+            int j=0;
+            for(Participant participant : this.listParticipant){
+                if(p.getEquiPersoTotal() == -participant.getEquiPersoTotal()){
+                    listDette.add(new Dette(p, participant, p.getEquiPersoTotal()));
+                    indexFind = j;
                 }
+                j++;
+            }
+            if(indexFind == -1) {
+                i++;
+                p = this.listParticipant.get(i);
+            }
+            else{
+                this.listParticipant.remove(i);
+                this.listParticipant.remove(indexFind-1);
+                p = this.listParticipant.get(i);
             }
         }
     }
+
 
 	/*##############################################################################################
 							Clone Liste

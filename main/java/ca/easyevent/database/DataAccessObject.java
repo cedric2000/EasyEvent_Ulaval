@@ -12,7 +12,7 @@ public abstract class DataAccessObject {
 									ATTRIBUTS
 	###############################################################################################*/
 
-    protected final static int VERSION = 40;
+    protected final static int VERSION = 46;
     protected final static String NOM = "db_easy_event.db";
 
     protected SQLiteDatabase database = null;

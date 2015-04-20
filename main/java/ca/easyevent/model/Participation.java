@@ -11,9 +11,9 @@ public class Participation{
 	private long idParticipant;
 	private long idDepense;
 
-	private double montant;
-	private double equilibre;
-	private boolean isSelected;
+	private double montant = 0;
+	private double equilibre = 0;
+	private boolean isSelected =false;
 
 	/*##############################################################################################
 									CONSTRUCTEUR
@@ -114,6 +114,7 @@ public class Participation{
                 ", depense=" + idDepense +
                 ", montant=" + montant +
                 ", equilibre=" + equilibre +
+                ", selected=" + isSelected +
                 '}';
     }
 

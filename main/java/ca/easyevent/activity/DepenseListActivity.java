@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -14,6 +13,7 @@ import ca.easyevent.R;
 import ca.easyevent.adapter.DepenseAdapter;
 import ca.easyevent.adapter.DepenseAdapterListener;
 import ca.easyevent.database.DAODepense;
+import ca.easyevent.database.DAOParticipant;
 import ca.easyevent.model.Depense;
 
 public class DepenseListActivity extends Activity implements DepenseAdapterListener{
@@ -40,18 +40,7 @@ public class DepenseListActivity extends Activity implements DepenseAdapterListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.depense_list_activity);
 
-        depenseDAO = new DAODepense(this);
-        depenseDAO.open();
-        idEvenement = getIntent().getLongExtra("EVENEMENT", 0);
-        listDepense = depenseDAO.getAllDepenses(idEvenement);
-
-        adapter = new DepenseAdapter(this, listDepense);
-        adapter.addListener(this);
-
-        listDepenseView = (ListView)findViewById(R.id.listDepense);
-        listDepenseView.setAdapter(adapter);
-
-        final LinearLayout addFlottingButton = (LinearLayout)findViewById(R.id.add_button_layout);
+        final View addFlottingButton = findViewById(R.id.add_button);
         addFlottingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,33 +51,36 @@ public class DepenseListActivity extends Activity implements DepenseAdapterListe
             }
         });
 
-        ImageView addButton = (ImageView)findViewById(R.id.add_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addFlottingButton.performClick();
-            }
-        });
-
-        depenseDAO.close();
     }
 
 
     protected  void onResume(){
         super.onResume();
+        DAODepense depenseDAO = new DAODepense(this);
         depenseDAO.open();
         idEvenement = getIntent().getLongExtra("EVENEMENT", 0);
         listDepense = depenseDAO.getAllDepenses(idEvenement);
+        depenseDAO.close();
 
-        adapter = new DepenseAdapter(this, listDepense);
+        DAOParticipant participantDAO = new DAOParticipant(this);
+        participantDAO.open();
+        adapter = new DepenseAdapter(this, listDepense, participantDAO.getAllParticipants(idEvenement));
         adapter.addListener(this);
         listDepenseView = (ListView)findViewById(R.id.listDepense);
         listDepenseView.setAdapter(adapter);
+        participantDAO.close();
 
-        depenseDAO.close();
+        TextView emptyEvent = (TextView)this.findViewById(R.id.dep_empty);
+        if(adapter.getCount()<1){
+            emptyEvent.setVisibility(View.VISIBLE);
+            listDepenseView.setVisibility(View.GONE);
+        }
+        else{
+            emptyEvent.setVisibility(View.GONE);
+            listDepenseView.setVisibility(View.VISIBLE);
+        }
+
     }
-
-
 
 
     /*##############################################################################################

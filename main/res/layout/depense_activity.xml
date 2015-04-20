@@ -43,8 +43,8 @@
         android:layout_below="@+id/titleDepenseText"
         />
 
-    <LinearLayout
-        android:id="@+id/edit_button_layout"
+    <View
+        android:id="@+id/edit_button"
         android:layout_width="48dp"
         android:layout_height="48dp"
 
@@ -52,20 +52,7 @@
 
         android:layout_marginBottom="-25dp"
         android:layout_marginLeft="16dp"
-        android:background="@drawable/flotting_btn">
-
-        <ImageView
-
-            android:id="@+id/edit_button"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:scaleType="fitXY"
-            android:layout_gravity="center"
-            android:layout_marginLeft="12dp"
-            android:src="@drawable/edit"
-            android:tint="@android:color/white"
-            android:background="@color/transparent"/>
-    </LinearLayout>
+        android:background="@drawable/flotting_btn_edit"/>
 
 
     <!--Libelle-->
@@ -106,6 +93,8 @@
             android:textStyle="normal"
         />
     </LinearLayout>
+
+
 
         <!--Date-->
     <LinearLayout

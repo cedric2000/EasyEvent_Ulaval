@@ -1,6 +1,7 @@
 package ca.easyevent.adapter;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -62,6 +63,13 @@ public class ParticipantAdapter extends ArrayAdapter<Participant> {
         ViewHolder holder = (ViewHolder) childView.getTag();
         holder.nameParticipantText.setText(listParticipant.get(position).getName());
         holder.balanceParticipantText.setText((int)listParticipant.get(position).getEquiPersoTotal()+" $");
+        if((int)listParticipant.get(position).getEquiPersoTotal()>0)
+            holder.balanceParticipantText.setTextColor(Color.GREEN);
+        else if((int)listParticipant.get(position).getEquiPersoTotal()<0)
+            holder.balanceParticipantText.setTextColor(Color.RED);
+        else
+            holder.balanceParticipantText.setTextColor(Color.LTGRAY);
+
 
         /* Si image
         Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.arrow_right);

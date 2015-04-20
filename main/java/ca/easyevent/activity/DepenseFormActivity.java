@@ -3,6 +3,8 @@ package ca.easyevent.activity;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -41,6 +43,7 @@ public class DepenseFormActivity extends Activity implements ParticipationAdapte
     private EditText libelleText;
     private TextView dateText, montantDepenseText;
     private ListView listParticipationView;
+    private TextView libTextError,dateTextError, nbParticipantTextError, montantTextError;
 
     private DAODepense depenseDAO;
     private DAOParticipation participationDAO;
@@ -61,13 +64,18 @@ public class DepenseFormActivity extends Activity implements ParticipationAdapte
         participationDAO = new DAOParticipation(this);
         depenseDAO.open();
 
-        long idDepense = getIntent().getLongExtra("DEPENSE", -1);
+        final long idDepense = getIntent().getLongExtra("DEPENSE", -1);
         idEvenement = getIntent().getLongExtra("EVENEMENT", 0);
 
         libelleText = (EditText)this.findViewById(R.id.lib_dep_text);
         montantDepenseText = (TextView)this.findViewById(R.id.budget_tot_dep_valor);
         dateText = (TextView)this.findViewById(R.id.date_dep_text);
         listParticipationView = (ListView)findViewById(R.id.list_participation);
+
+        libTextError = (TextView)this.findViewById(R.id.lib_error);
+        nbParticipantTextError = (TextView)this.findViewById(R.id.nb_participant_error);
+        montantTextError = (TextView)findViewById(R.id.montant_error);
+        dateTextError = (TextView)this.findViewById(R.id.date_error);
 
         if(idDepense != -1){
             this.depense = depenseDAO.getDepense(idDepense);
@@ -91,6 +99,34 @@ public class DepenseFormActivity extends Activity implements ParticipationAdapte
             }
         });
 
+        TextView deleteButton = (TextView)findViewById(R.id.delete);
+        if(editMode) {
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArrayList<Participation> listParticipation = participationDAO.getAllParticipationsForDepense(depense.getId());
+                    for(Participation p : listParticipation) {
+                        Participant participant = participantDAO.getParticipant(p.getIdParticipant());
+                        double equilibreGlobale = participant.getEquiPersoTotal() - p.getEquilibre();
+                        participantDAO.updateEquilibreTotale(participant.getId(),equilibreGlobale);
+                    }
+
+                    participationDAO.open();
+                    for (Participation participation : listParticipation)
+                        participationDAO.deleteParticipation(participation.getId());
+                    participationDAO.close();
+
+                    depenseDAO.open();
+                    depenseDAO.deleteDepense(idDepense);
+                    depenseDAO.close();
+                    Intent intent = new Intent(DepenseFormActivity.this, DepenseListActivity.class);
+                    intent.putExtra("EVENEMENT", idEvenement);
+                    startActivity(intent);
+                }
+            });
+        }
+        else
+            deleteButton.setVisibility(View.GONE);
     }
 
 
@@ -135,12 +171,7 @@ public class DepenseFormActivity extends Activity implements ParticipationAdapte
         });
         fromDatePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "ANNULER",new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if(depense.getDate() != null)
-                    dateText.setText(depense.getDate().toString());
-                else
-                    dateText.setText("");
-            }
+            public void onClick(DialogInterface dialog, int which) { }
         });
     }
 
@@ -169,7 +200,6 @@ public class DepenseFormActivity extends Activity implements ParticipationAdapte
         participationDAO.close();
     }
 
-
     public void initFormNewDepense(){
         depense = new Depense();
         listParticipation = new ArrayList<>();
@@ -191,55 +221,127 @@ public class DepenseFormActivity extends Activity implements ParticipationAdapte
         editMode = false;
     }
 
+
     /*##############################################################################################
                                     SUBMIT FORM
     ###############################################################################################*/
 
     public void submitForm(){
-
+        if(checkForm()) {
             //get data
-        depense.setLibelle(libelleText.getText().toString());
-        depense.setDate(new DateModifiable(dateText.getText().toString()));
-        updateCalcul();
+            depense.setLibelle(libelleText.getText().toString());
+            depense.setDate(new DateModifiable(dateText.getText().toString()));
+            updateCalcul();
 
-            //Update data
-        depenseDAO.open();
-        long idDepense;
-        if(editMode) {
-            depenseDAO.updateDepense(depense);
-            idDepense = depense.getId();
+            //Update depense
+            depenseDAO.open();
+            long idDepense;
+            if (editMode) {
+                depenseDAO.updateDepense(depense);
+                idDepense = depense.getId();
+            } else
+                idDepense = depenseDAO.addDepense(idEvenement, depense);
+
+
+            System.out.println("Recup dans form : " + depense);
+
+            //Update participation
+            participationDAO.open();
+            for (Participation participation : adapter.getListParticipation()){
+                participation.setIdDepense(idDepense);
+                if (participation.isSelected()) {
+                    double equilibre = participation.getMontant() - (depense.getMontantTotal() / depense.getNbParticipants());
+                    participation.setEquilibre(equilibre);
+                }
+                if (editMode)
+                    participationDAO.updateParticipation(participation);
+                else
+                    participationDAO.addParticipation(participation);
+            }
+
+            //Update participant
+            participantDAO = new DAOParticipant(this);
+            participantDAO.open();
+            for (Participation p : adapter.getListParticipation()) {
+                Participant participant = participantDAO.getParticipant(p.getIdParticipant());
+                double ancienneValeur = 0;
+                if (editMode)
+                    ancienneValeur = participationDAO.getParticipation(p.getId()).getEquilibre();
+                double equilibreGlobale = participant.getEquiPersoTotal() + p.getEquilibre() - ancienneValeur;
+                participantDAO.updateEquilibreTotale(participant.getId(), equilibreGlobale);
+            }
+
+            participationDAO.close();
+            participantDAO.close();
+            depenseDAO.close();
+
+            finish();
+        }
+    }
+
+
+    /*##############################################################################################
+                       VERIFICATION FORMULAIRE
+    ###############################################################################################*/
+
+    public boolean checkForm(){
+        boolean textOK = setErrorField(libelleText,libTextError),numberOK=true,
+                montantOK = setErrorMontant(montantDepenseText, montantTextError),
+                dateOK = setErrorField(dateText,dateTextError);
+
+            //Nombre participant dépense
+        int number =0;
+        for (Participation participation : adapter.getListParticipation()) {
+            if (participation.isSelected())
+                number++;
+        }
+        if(number<2){
+            nbParticipantTextError.setVisibility(View.VISIBLE);
+            numberOK = false;
         }
         else
-            idDepense = depenseDAO.addDepense(idEvenement, depense);
+            nbParticipantTextError.setVisibility(View.GONE);
 
-        participationDAO.open();
-        for (Participation participation : adapter.getListParticipation()) {
-            participation.setIdDepense(idDepense);
-            if(participation.isSelected()) {
-                double equilibre = participation.getMontant() - (depense.getMontantTotal() / depense.getNbParticipants());
-                participation.setEquilibre(equilibre);
-            }
-            if(editMode)
-                participationDAO.updateParticipation(participation);
-            else
-                participationDAO.addParticipation(participation);
-        }
-
-            //MAJ des participants
-        participantDAO = new DAOParticipant(this);
-        participantDAO.open();
-        for(Participation p : adapter.getListParticipation()) {
-            Participant participant = participantDAO.getParticipant(p.getIdParticipant());
-            double equilibreGlobale = participant.getEquiPersoTotal() + p.getEquilibre();
-            participantDAO.updateEquilibreTotale(participant.getId(),equilibreGlobale);
-        }
-
-        participationDAO.close();
-        participantDAO.close();
-        depenseDAO.close();
-
-        finish();
+        return  textOK && dateOK && numberOK  && montantOK ;
     }
+
+    public boolean setErrorField(TextView editText, TextView textError ){
+        Drawable imageResource;
+        boolean isOK;
+        if(editText.getText()==null ||editText.getText().toString().equals("")){
+            imageResource = getResources().getDrawable( R.drawable.edit_text_error);
+            textError.setVisibility(View.VISIBLE);
+            isOK = false;
+        }
+        else {
+            imageResource = getResources().getDrawable(R.drawable.edit_text);
+            textError.setVisibility(View.GONE);
+            isOK = true;
+        }
+        int sdk = android.os.Build.VERSION.SDK_INT;
+        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            editText.setBackgroundDrawable(imageResource);
+        } else {
+            editText.setBackground(imageResource);
+        }
+
+        return isOK;
+    }
+
+    public boolean setErrorMontant(TextView editText, TextView textError ){
+        boolean isOK;
+        if(editText.getText()==null || Double.valueOf(editText.getText().toString()) <= 0){
+            textError.setVisibility(View.VISIBLE);
+            isOK = false;
+        }
+        else {
+            textError.setVisibility(View.GONE);
+            isOK = true;
+        }
+
+        return isOK;
+    }
+
 
     /*##############################################################################################
                        COMPORTEMENT ADAPTER LISTENER
@@ -249,12 +351,15 @@ public class DepenseFormActivity extends Activity implements ParticipationAdapte
     public void updateCalcul() {
 
         double montantDepense = 0;
+        int nbParticipant=0;
         for (Participation participation : adapter.getListParticipation()) {
-            if (participation.isSelected())
+            if (participation.isSelected()) {
                 montantDepense += participation.getMontant();
+                nbParticipant++;
+            }
         }
         depense.setMontantTotal(montantDepense);
-        depense.setNbParticipant(adapter.getCount());
+        depense.setNbParticipant(nbParticipant);
 
         for (Participation participation : adapter.getListParticipation()) {
             if (participation.isSelected()) {
@@ -262,6 +367,7 @@ public class DepenseFormActivity extends Activity implements ParticipationAdapte
                 participation.setEquilibre(equilibre);
             }
         }
+
         this.montantDepenseText.setText(depense.getMontantTotal() +"");
     }
 

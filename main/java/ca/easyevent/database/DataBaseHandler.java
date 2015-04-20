@@ -23,8 +23,9 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     public static final String EVENT_LIEU = "lieu";
     public static final String EVENT_DATE_DEBUT = "date_debut";
     public static final String EVENT_DATE_FIN= "date_fin";
+    public static final String EVENT_IMAGE= "event_image";
 
-    public static final String[] EVENT_COLONNE = {EVENT_ID,EVENT_TITRE,EVENT_LIEU, EVENT_DATE_DEBUT, EVENT_DATE_FIN };
+    public static final String[] EVENT_COLONNE = {EVENT_ID,EVENT_TITRE,EVENT_LIEU, EVENT_DATE_DEBUT, EVENT_DATE_FIN,EVENT_IMAGE };
 
     public static final String EVENT_TABLE_DROP = "DROP TABLE IF EXISTS " + EVENT_NAME_TABLE + ";";
     public static final String EVENT_TABLE_CREATE =
@@ -33,7 +34,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                     EVENT_TITRE + " TEXT, " +
                     EVENT_LIEU + " TEXT, " +
                     EVENT_DATE_DEBUT + " TEXT, " +
-                    EVENT_DATE_FIN + " REAL);";
+                    EVENT_DATE_FIN + " TEXT, " +
+                    EVENT_IMAGE + " TEXT);";
 
                 /*====================================
                             participant
@@ -45,9 +47,10 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     public static final String PARTICIPANT_TEL = "telephone";
     public static final String PARTICIPANT_MAIL = "mail";
     public static final String PARTICIPANT_EQUI = "equilibrePersoTotal";
+    public static final String PARTICIPANT_IMAGE= "image";
 
     public static final String[] PARTICIPANT_COLONNE = {EVENT_ID, PARTICIPANT_ID, PARTICIPANT_NAME,
-                        PARTICIPANT_TEL,PARTICIPANT_MAIL,PARTICIPANT_EQUI  };
+                        PARTICIPANT_TEL,PARTICIPANT_MAIL,PARTICIPANT_EQUI,PARTICIPANT_IMAGE  };
 
     public static final String PARTICIPANT_TABLE_DROP = "DROP TABLE IF EXISTS " + PARTICIPANT_NAME_TABLE + ";";
     public static final String PARTICIPANT_TABLE_CREATE =
@@ -57,8 +60,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                     PARTICIPANT_NAME + " TEXT, " +
                     PARTICIPANT_TEL + " TEXT, " +
                     PARTICIPANT_MAIL + " TEXT, " +
+                    PARTICIPANT_IMAGE + " TEXT, " +
                     PARTICIPANT_EQUI + " REAL);";
-                    //"FOREIGN KEY("+EVENT_ID+") REFERENCES "+ EVENT_NAME_TABLE+"("+EVENT_ID+") ON DELETE CASCADE);";
 
 
                 /*====================================

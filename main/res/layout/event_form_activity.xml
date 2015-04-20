@@ -33,24 +33,55 @@
             android:paddingBottom="10dp"
             android:layout_marginRight="16dp"/>
 
+        <TextView
+            android:id="@+id/delete"
+            android:background="@android:color/transparent"
+
+            android:text="SUPRIMER"
+            android:textSize="14sp"
+            android:textColor="@drawable/text_color_light"
+
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/send"
+
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"/>
+
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/image_layout"
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        android:background="@color/main_light"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toolBar">
 
         <ImageView
-            android:id="@+id/contactImageView"
-            android:src="@drawable/luggage"
-            android:tint="@android:color/white"
-            android:layout_width="200dp"
+            android:id="@+id/upload_image_preview"
+            android:layout_width="fill_parent"
             android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:scaleType="fitCenter"
+            android:visibility="gone"
+            android:padding="0dp"
+            android:layout_margin="0dp"/>
+
+        <TextView
+            android:id="@+id/empty_image_preview"
+            android:background="@color/text_light"
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+
+            android:text="Ajouter une image"
+            android:textColor="@color/text_dark"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+
+            android:gravity="center"
+
             android:padding="0dp"
             android:layout_margin="0dp"/>
 
@@ -71,8 +102,8 @@
         android:layout_below="@+id/lineTitle"/>
 
 
-    <LinearLayout
-        android:id="@+id/choose_photo_layout"
+    <View
+        android:id="@+id/choose_photo"
         android:layout_width="48dp"
         android:layout_height="48dp"
 
@@ -80,21 +111,7 @@
 
         android:layout_marginBottom="-25dp"
         android:layout_marginLeft="16dp"
-        android:background="@drawable/flotting_btn">
-
-        <ImageButton
-
-            android:id="@+id/choose_photo"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:scaleType="fitXY"
-            android:layout_gravity="center"
-            android:layout_marginLeft="12dp"
-            android:src="@drawable/camera"
-            android:tint="@android:color/white"
-            android:background="@color/accent_regular"/>
-    </LinearLayout>
-
+        android:background="@drawable/flotting_btn_camera"/>
     
     <!--Libelle-->
     <LinearLayout
@@ -104,7 +121,7 @@
 
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_below="@+id/subTitleText">
 
         <EditText
@@ -123,6 +140,23 @@
             android:fontFamily="sans-serif"
             android:textStyle="normal"
             />
+
+        <TextView
+            android:id="@+id/titre_error"
+            android:paddingTop="@dimen/padding_error_top"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:background="@android:color/white"
+
+            android:text="obligatoire"
+            android:textColor="@color/text_error"
+            android:textSize="@dimen/text_size_body"
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="normal"
+            />
+
     </LinearLayout>
 
     <!--Date Debut-->
@@ -170,6 +204,24 @@
 
     </LinearLayout>
 
+
+    <TextView
+        android:id="@+id/date_error"
+        android:layout_below="@+id/date_debut_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:background="@android:color/white"
+
+        android:paddingTop="@dimen/padding_error_top"
+        android:visibility="gone"
+        android:text="obligatoire"
+        android:textColor="@color/text_error"
+        android:textSize="@dimen/text_size_body"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="normal"
+    />
+
     <!--DateFin-->
     <LinearLayout
         android:id="@+id/date_fin_event"
@@ -188,11 +240,11 @@
             android:id="@+id/date_fin_event_text"
 
             android:singleLine="true"
-            android:layout_width="110dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center"
-            android:hint="Date Fin"
+            android:hint="Date Fin (facultatif)"
             android:background="@drawable/edit_text"
             android:paddingBottom="5dp"
             android:textColor="@color/text_dark"
@@ -215,7 +267,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginLeft="24dp"
         android:orientation="horizontal"
-        android:layout_below="@+id/date_fin_event">
+        android:layout_below="@+id/date_error">
 
         <ImageView
             android:id="@+id/place_event_icon"
@@ -250,6 +302,22 @@
             />
 
     </LinearLayout>
-    
+
+    <TextView
+        android:id="@+id/place_error"
+        android:layout_below="@+id/place_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:background="@android:color/white"
+
+        android:paddingTop="@dimen/padding_error_top"
+        android:visibility="gone"
+        android:text="obligatoire"
+        android:textColor="@color/text_error"
+        android:textSize="@dimen/text_size_body"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="normal"
+    />
 
 </RelativeLayout>

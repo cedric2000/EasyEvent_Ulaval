@@ -1,19 +1,22 @@
 package ca.easyevent.activity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import ca.easyevent.R;
 import ca.easyevent.database.DAOParticipant;
 import ca.easyevent.model.Participant;
+import ca.easyevent.utils.ImageManager;
 
 
-public class ParticipantActivity extends ActionBarActivity {
+public class ParticipantActivity extends Activity {
 
     /*##############################################################################################
 									ATRIBUTS
@@ -53,7 +56,7 @@ public class ParticipantActivity extends ActionBarActivity {
         mailText.setText(this.participant.getMail()+"",TextView.BufferType.EDITABLE);
 
             //Button edition
-        final LinearLayout editFlottingButton = (LinearLayout)findViewById(R.id.edit_button_layout);
+        final View editFlottingButton = findViewById(R.id.edit_button);
         editFlottingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,13 +66,6 @@ public class ParticipantActivity extends ActionBarActivity {
             }
         });
 
-        ImageView addButton = (ImageView)findViewById(R.id.edit_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editFlottingButton.performClick();
-            }
-        });
     }
 
     protected  void onResume(){
@@ -81,8 +77,26 @@ public class ParticipantActivity extends ActionBarActivity {
         nameText.setText(this.participant.getName(), TextView.BufferType.EDITABLE);
         telText.setText(this.participant.getTelephone(),TextView.BufferType.EDITABLE);
         mailText.setText(this.participant.getMail()+"",TextView.BufferType.EDITABLE);
+        initImage();
 
         participantDAO.close();
+    }
+
+    public void initImage() {
+        ImageView imageView = (ImageView)findViewById(R.id.upload_image_preview);
+        if (participant.getImage() != null && !participant.getImage().equals("default")) {
+            Display display = getWindowManager().getDefaultDisplay();
+            double deviceWidth = display.getWidth();
+
+            ImageManager imageManager = new ImageManager(this, deviceWidth);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+
+            Bitmap bitmap = BitmapFactory.decodeFile(participant.getImage(), options);
+            imageView.setImageDrawable(imageManager.getResizeImage(bitmap, options));
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setVisibility(View.VISIBLE);
+        } else
+            imageView.setVisibility(View.GONE);
     }
 
 }

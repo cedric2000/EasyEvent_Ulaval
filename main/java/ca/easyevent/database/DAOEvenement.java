@@ -35,6 +35,7 @@ public class DAOEvenement extends DataAccessObject {
             values.put(DataBaseHandler.EVENT_DATE_FIN, evenement.getDateFin().toString());
         else
             values.put(DataBaseHandler.EVENT_DATE_FIN, "");
+        values.put(DataBaseHandler.EVENT_IMAGE, evenement.getImage());
 
         return database.insert(DataBaseHandler.EVENT_NAME_TABLE, null, values);
     }
@@ -60,6 +61,7 @@ public class DAOEvenement extends DataAccessObject {
             values.put(DataBaseHandler.EVENT_DATE_FIN, evenement.getDateFin().toString());
         else
             values.put(DataBaseHandler.EVENT_DATE_FIN, "");
+        values.put(DataBaseHandler.EVENT_IMAGE, evenement.getImage());
 
         database.update(DataBaseHandler.EVENT_NAME_TABLE, values,
                 DataBaseHandler.EVENT_ID + " = ?", new String[]{String.valueOf(evenement.getId())});
@@ -117,6 +119,8 @@ public class DAOEvenement extends DataAccessObject {
             evenement.setDateFin( new DateModifiable(strDate) );
         else
             evenement.setDateFin(null);
+
+        evenement.setImage(cursor.getString(5));
         return evenement;
     }
 

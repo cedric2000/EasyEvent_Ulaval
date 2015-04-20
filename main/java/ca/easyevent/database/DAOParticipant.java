@@ -35,6 +35,7 @@ public class DAOParticipant extends DataAccessObject  {
         values.put(DataBaseHandler.PARTICIPANT_TEL, participant.getTelephone());
         values.put(DataBaseHandler.PARTICIPANT_MAIL, participant.getMail());
         values.put(DataBaseHandler.PARTICIPANT_EQUI, 0);
+        values.put(DataBaseHandler.PARTICIPANT_IMAGE, participant.getImage());
 
         return database.insert(DataBaseHandler.PARTICIPANT_NAME_TABLE, null, values);
     }
@@ -44,7 +45,9 @@ public class DAOParticipant extends DataAccessObject  {
 	###############################################################################################*/
 
     public void deleteParticipant(long id) {
-        database.delete(DataBaseHandler.PARTICIPANT_NAME_TABLE, DataBaseHandler.PARTICIPANT_ID + " = ?", new String[] {String.valueOf(id)});
+        database.delete(DataBaseHandler.PARTICIPANT_NAME_TABLE,
+                DataBaseHandler.PARTICIPANT_ID + " = ?",
+                new String[] {String.valueOf(id)});
     }
 
     /*##############################################################################################
@@ -58,6 +61,7 @@ public class DAOParticipant extends DataAccessObject  {
         values.put(DataBaseHandler.PARTICIPANT_TEL, participant.getTelephone());
         values.put(DataBaseHandler.PARTICIPANT_MAIL, participant.getMail());
         values.put(DataBaseHandler.PARTICIPANT_EQUI, participant.getEquiPersoTotal());
+        values.put(DataBaseHandler.PARTICIPANT_IMAGE, participant.getImage());
 
         database.update(DataBaseHandler.PARTICIPANT_NAME_TABLE, values,
                 DataBaseHandler.PARTICIPANT_ID + " = ?", new String[]{String.valueOf(participant.getId())});
@@ -122,6 +126,7 @@ public class DAOParticipant extends DataAccessObject  {
         participant.setTelephone(cursor.getString(3));
         participant.setMail(cursor.getString(4));
         participant.setEquilibrePersoTotal(cursor.getDouble(5));
+        participant.setImage(cursor.getString(6));
         return participant;
     }
 }

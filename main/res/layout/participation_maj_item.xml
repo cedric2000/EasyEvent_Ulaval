@@ -17,9 +17,7 @@
 
         android:layout_centerVertical="true"
         android:layout_gravity="center"
-
-        android:focusable="false"
-        android:focusableInTouchMode="false"/>
+        android:textColorHint="@color/main_dark"/>
 
     <!-- First row -->
     <TextView
@@ -44,7 +42,7 @@
 
     <EditText
         android:id="@+id/montant_participation"
-
+        android:visibility="gone"
         android:text="200"
         android:textColor="@color/text_dark"
         android:textSize="14sp"
@@ -55,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/devise"
         android:layout_centerVertical="true"
-
+        android:inputType="numberDecimal"
         android:background="@drawable/edit_text"
         android:paddingBottom="5dp"
         android:gravity="center"
@@ -70,6 +68,7 @@
         android:fontFamily="sans-serif"
         android:textStyle="normal"
 
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

@@ -3,9 +3,8 @@ package ca.easyevent.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Display;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,10 +14,8 @@ import ca.easyevent.R;
 import ca.easyevent.adapter.EvenementAdapter;
 import ca.easyevent.adapter.EvenementAdapterListener;
 import ca.easyevent.database.DAOEvenement;
-import ca.easyevent.database.DAOParticipant;
 import ca.easyevent.model.Evenement;
-import ca.easyevent.model.Participant;
-import ca.easyevent.utils.DateModifiable;
+import ca.easyevent.utils.ImageManager;
 
 
 public class EvenementListActivity extends ActionBarActivity implements EvenementAdapterListener{
@@ -40,23 +37,13 @@ public class EvenementListActivity extends ActionBarActivity implements Evenemen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_list_activity);
 
-        //manageDataBase();
-
-        final LinearLayout addFlottingButton = (LinearLayout)findViewById(R.id.add_button_layout);
+        final View addFlottingButton = (View)findViewById(R.id.add_button);
         addFlottingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EvenementListActivity.this, EvenementFormActivity.class);
                 intent.putExtra("EVENEMENT", -1);
                 startActivity(intent);
-            }
-        });
-
-        ImageView addButton = (ImageView)findViewById(R.id.add_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addFlottingButton.performClick();
             }
         });
     }
@@ -70,28 +57,17 @@ public class EvenementListActivity extends ActionBarActivity implements Evenemen
         initView();
     }
 
-
-    public void manageDataBase(){
-            //Event
-        Evenement evenement = new Evenement("Road Trip USA", "Boston", new DateModifiable("01/02/2014"));
-        long id = evenementDAO.addEvenement(evenement);
-
-            //Participant
-        DAOParticipant participantDAO = new DAOParticipant(this);
-        participantDAO.open();
-        Participant participant1 = new Participant("Bob", "(844) 129-3359", "novi_enbe@yahoo.com");
-        Participant participant2 = new Participant("Orel", "(844) 285-0242", "tiena_asfary@yahoo.co.id");
-        long idPart1= participantDAO.addParticipant(evenementDAO.getAllEvenements().get(0).getId(), participant1);
-        long idPart2= participantDAO.addParticipant(evenementDAO.getAllEvenements().get(0).getId(), participant2);
-        participantDAO.close();
-    }
-
     /*##############################################################################################
                                     CREATION
     ###############################################################################################*/
 
     public void initView(){
-        EvenementAdapter adapter = new EvenementAdapter(this, listEvenement);
+
+        Display display = getWindowManager().getDefaultDisplay();
+        double deviceWidth = display.getWidth();
+        ImageManager imageManager = new ImageManager(this, deviceWidth-40);
+
+        EvenementAdapter adapter = new EvenementAdapter(this, listEvenement,imageManager);
         adapter.addListener(this);
 
         ListView list = (ListView)findViewById(R.id.listEvenements);
@@ -118,4 +94,5 @@ public class EvenementListActivity extends ActionBarActivity implements Evenemen
         intent.putExtra("EVENEMENT", item.getId());
         startActivity(intent);
     }
+
 }

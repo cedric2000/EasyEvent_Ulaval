@@ -10,7 +10,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ca.easyevent.R;
+import ca.easyevent.database.DAODepense;
+import ca.easyevent.database.DAOParticipant;
+import ca.easyevent.database.DAOParticipation;
 import ca.easyevent.model.Depense;
+import ca.easyevent.model.Participant;
+import ca.easyevent.model.Participation;
 
 
 public class DepenseAdapter extends ArrayAdapter<Depense>{
@@ -20,6 +25,7 @@ public class DepenseAdapter extends ArrayAdapter<Depense>{
 	###############################################################################################*/
 
     private ArrayList<Depense> listDepense;
+    private ArrayList<Participant> listParticipantEvent;
     private Activity activity;
     private ArrayList<DepenseAdapterListener> listListener = new ArrayList<>();
 
@@ -28,10 +34,11 @@ public class DepenseAdapter extends ArrayAdapter<Depense>{
 									CONSTRUCTEUR
 	###############################################################################################*/
 
-    public DepenseAdapter(Activity activity, ArrayList<Depense> listDepense){
+    public DepenseAdapter(Activity activity, ArrayList<Depense> listDepense, ArrayList<Participant> listParticipantEvent){
         super(activity, R.layout.depense_item, listDepense);
         this.activity = activity;
         this.listDepense=listDepense;
+        this.listParticipantEvent=listParticipantEvent;
     }
 
 
@@ -67,15 +74,15 @@ public class DepenseAdapter extends ArrayAdapter<Depense>{
         ViewHolder holder = (ViewHolder) childView.getTag();
 
         holder.libelleText.setText(listDepense.get(position).getLibelle());
-        holder.depenseursText.setText("Bob");
+        holder.depenseursText.setText(getParticipantString(listDepense.get(position).getId()));
         holder.montantDepenseText.setText( ((int)listDepense.get(position).getMontantTotal()) + " $");
 
+        final int pos = position;
         holder.goToDepenseLayout.setTag(position);
         holder.goToDepenseLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Integer position = (Integer)v.getTag();
-                sendListener(listDepense.get(position), position);
+                sendListener(listDepense.get(pos), pos);
             }
         });
 
@@ -84,9 +91,64 @@ public class DepenseAdapter extends ArrayAdapter<Depense>{
 
 
     /*##############################################################################################
-									ACCESSEURS
+									PARTICIPANT NAME
 	###############################################################################################*/
 
+
+    public String getParticipantString(long idDepense) {
+
+            //Depense
+        DAODepense depenseDAO = new DAODepense (activity);
+        depenseDAO.open();
+        Depense depense = depenseDAO.getDepense(idDepense);
+        depenseDAO.close();
+
+            //Participation à la dépense
+        DAOParticipation participationDAO = new DAOParticipation (activity);
+        participationDAO.open();
+        ArrayList<Participation> listParticipation = participationDAO.getAllParticipationsForDepense(idDepense);
+        participationDAO.close();
+
+            //Participant à la dépense
+        DAOParticipant participantDAO = new DAOParticipant (activity);
+        participantDAO.open();
+        ArrayList<Participant> participantDepense = new ArrayList<>();
+        ArrayList<Participant> unParticipantDepense = new ArrayList<>();
+        for (Participation participation : listParticipation) {
+            Participant p = participantDAO.getParticipant(participation.getIdParticipant());
+            if(participation.isSelected())
+                participantDepense.add(p);
+            else
+                unParticipantDepense.add(p);
+        }
+        participantDAO.close();
+
+            //Construction String
+        String result ="";
+        int sizeParticipantDepense = participantDepense.size(),
+                sizeUnparticipantDepense = unParticipantDepense.size();
+
+        if(sizeUnparticipantDepense == 0){
+            result = "Tous";
+        }
+        else if(sizeUnparticipantDepense < sizeParticipantDepense){
+            result = "Tous sauf ";
+            for (Participant participant :unParticipantDepense)
+                result += participant.getName()+", ";
+        }
+        else{
+            for (Participant participant : participantDepense)
+                result += participant.getName()+", ";
+        }
+
+        return result;
+    }
+
+
+
+    /*##############################################################################################
+									ACCESSEURS
+	###############################################################################################*/
     @Override
     public int getCount() {
         return listDepense.size();
