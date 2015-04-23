@@ -15,7 +15,7 @@ public class Dette {
 
 	
 	public String toString(){
-		return debiteur.getName() + " doit " + Math.round(valeur) + " a " + creancier.getName();
+		return debiteur.getName() + " doit " + Math.round(valeur) + "$ à " + creancier.getName();
 	}
 
 	public Participant getCreancier() {

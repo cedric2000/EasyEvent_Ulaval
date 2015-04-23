@@ -79,12 +79,18 @@ public class Rapport {
             }
             if(indexFind == -1) {
                 i++;
-                p = this.listParticipant.get(i);
+                if(!this.listParticipant.isEmpty())
+                    p = this.listParticipant.get(i);
+                else
+                    p=null;
             }
             else{
                 this.listParticipant.remove(i);
                 this.listParticipant.remove(indexFind-1);
-                p = this.listParticipant.get(i);
+                if(!this.listParticipant.isEmpty())
+                    p = this.listParticipant.get(i);
+                else
+                    p=null;
             }
         }
     }

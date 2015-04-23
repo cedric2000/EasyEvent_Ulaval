@@ -89,4 +89,8 @@ public class DepenseActivity extends Activity  {
         participationDAO.close();
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

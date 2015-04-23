@@ -62,11 +62,14 @@ public class EvenementActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
     /*##############################################################################################
                                     INIT VIEW
     ###############################################################################################*/
-
-
 
     public void initView(){
         TextView titreText = (TextView)findViewById(R.id.nameEventText),

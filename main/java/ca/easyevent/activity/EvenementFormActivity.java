@@ -143,8 +143,9 @@ public class EvenementFormActivity extends Activity {
         final DAODepense depenseDAO = new DAODepense(this);
         final DAOParticipation participationDAO = new DAOParticipation(this);
 
-        participantDAO.open();
+
         if(editMode) {
+
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -175,7 +176,6 @@ public class EvenementFormActivity extends Activity {
                     startActivity(intent);
                 }
             });
-            participantDAO.close();
         }
         else
             deleteButton.setVisibility(View.GONE);

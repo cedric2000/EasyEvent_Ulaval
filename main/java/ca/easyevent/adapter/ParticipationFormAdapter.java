@@ -37,7 +37,6 @@ public class ParticipationFormAdapter extends ArrayAdapter<Participation>{
         this.activity = activity;
         this.participationList=inParticipationList;
         participantDAO = new DAOParticipant(activity);
-        participantDAO.open();
     }
 
 
@@ -71,7 +70,10 @@ public class ParticipationFormAdapter extends ArrayAdapter<Participation>{
         final ViewHolder holder = (ViewHolder) childView.getTag();
 
         Participation participation = participationList.get(position);
+
+        participantDAO.open();
         final String participantName = participantDAO.getParticipant(participation.getIdParticipant()).getName();
+        participantDAO.close();
 
         holder.checkBox.setChecked(participation.isSelected());
         holder.nameParticipation.setText(participantName);
@@ -124,10 +126,10 @@ public class ParticipationFormAdapter extends ArrayAdapter<Participation>{
         return childView;
     }
 
+
     /*##############################################################################################
 									ACCESSEURS
 	###############################################################################################*/
-
 
     @Override
     public int getCount() {

@@ -41,7 +41,7 @@ public class ParticipantListActivity extends Activity implements ParticipantAdap
 
         participantDAO = new DAOParticipant(this);
 
-        final View addFlottingButton = findViewById(R.id.add_button);
+        View addFlottingButton = findViewById(R.id.add_button);
         addFlottingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

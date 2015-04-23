@@ -82,6 +82,11 @@ public class ParticipantActivity extends Activity {
         participantDAO.close();
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
     public void initImage() {
         ImageView imageView = (ImageView)findViewById(R.id.upload_image_preview);
         if (participant.getImage() != null && !participant.getImage().equals("default")) {

@@ -3,7 +3,6 @@ package ca.easyevent.activity;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -61,11 +60,14 @@ public class DepenseFormActivity extends Activity implements ParticipationAdapte
         setContentView(R.layout.depense_form_activity);
 
         depenseDAO = new DAODepense(this);
+        participantDAO = new DAOParticipant(this);
         participationDAO = new DAOParticipation(this);
+
         depenseDAO.open();
 
         final long idDepense = getIntent().getLongExtra("DEPENSE", -1);
         idEvenement = getIntent().getLongExtra("EVENEMENT", 0);
+
 
         libelleText = (EditText)this.findViewById(R.id.lib_dep_text);
         montantDepenseText = (TextView)this.findViewById(R.id.budget_tot_dep_valor);
@@ -76,6 +78,7 @@ public class DepenseFormActivity extends Activity implements ParticipationAdapte
         nbParticipantTextError = (TextView)this.findViewById(R.id.nb_participant_error);
         montantTextError = (TextView)findViewById(R.id.montant_error);
         dateTextError = (TextView)this.findViewById(R.id.date_error);
+
 
         if(idDepense != -1){
             this.depense = depenseDAO.getDepense(idDepense);
@@ -99,29 +102,36 @@ public class DepenseFormActivity extends Activity implements ParticipationAdapte
             }
         });
 
+                /*=============================
+                      Button Delete
+                =============================*/
+
         TextView deleteButton = (TextView)findViewById(R.id.delete);
         if(editMode) {
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    participationDAO.open();
+                    participantDAO.open();
+                    depenseDAO.open();
+
                     ArrayList<Participation> listParticipation = participationDAO.getAllParticipationsForDepense(depense.getId());
                     for(Participation p : listParticipation) {
                         Participant participant = participantDAO.getParticipant(p.getIdParticipant());
                         double equilibreGlobale = participant.getEquiPersoTotal() - p.getEquilibre();
                         participantDAO.updateEquilibreTotale(participant.getId(),equilibreGlobale);
                     }
+                    participantDAO.close();
 
-                    participationDAO.open();
                     for (Participation participation : listParticipation)
                         participationDAO.deleteParticipation(participation.getId());
                     participationDAO.close();
 
-                    depenseDAO.open();
+
                     depenseDAO.deleteDepense(idDepense);
                     depenseDAO.close();
-                    Intent intent = new Intent(DepenseFormActivity.this, DepenseListActivity.class);
-                    intent.putExtra("EVENEMENT", idEvenement);
-                    startActivity(intent);
+
+                    finish();
                 }
             });
         }
@@ -204,7 +214,6 @@ public class DepenseFormActivity extends Activity implements ParticipationAdapte
         depense = new Depense();
         listParticipation = new ArrayList<>();
 
-        participantDAO = new DAOParticipant(this);
         participantDAO.open();
 
         for(Participant participant : participantDAO.getAllParticipants(idEvenement)){
@@ -243,10 +252,22 @@ public class DepenseFormActivity extends Activity implements ParticipationAdapte
                 idDepense = depenseDAO.addDepense(idEvenement, depense);
 
 
-            System.out.println("Recup dans form : " + depense);
+            //Update participant
+            participantDAO.open();
+            participationDAO.open();
+            for (Participation p : adapter.getListParticipation()) {
+                Participant participant = participantDAO.getParticipant(p.getIdParticipant());
+                double ancienneValeur = 0;
+                if (editMode)
+                    ancienneValeur = participationDAO.getParticipation(p.getId()).getEquilibre();
+                double equilibreGlobale = participant.getEquiPersoTotal() + p.getEquilibre() - ancienneValeur;
+                participantDAO.updateEquilibreTotale(participant.getId(), equilibreGlobale);
+                System.out.println("Participant : " + participant+" | ancienne valeur : " + ancienneValeur
+                                    +" | equilibre : " + equilibreGlobale);
+            }
+
 
             //Update participation
-            participationDAO.open();
             for (Participation participation : adapter.getListParticipation()){
                 participation.setIdDepense(idDepense);
                 if (participation.isSelected()) {
@@ -257,18 +278,6 @@ public class DepenseFormActivity extends Activity implements ParticipationAdapte
                     participationDAO.updateParticipation(participation);
                 else
                     participationDAO.addParticipation(participation);
-            }
-
-            //Update participant
-            participantDAO = new DAOParticipant(this);
-            participantDAO.open();
-            for (Participation p : adapter.getListParticipation()) {
-                Participant participant = participantDAO.getParticipant(p.getIdParticipant());
-                double ancienneValeur = 0;
-                if (editMode)
-                    ancienneValeur = participationDAO.getParticipation(p.getId()).getEquilibre();
-                double equilibreGlobale = participant.getEquiPersoTotal() + p.getEquilibre() - ancienneValeur;
-                participantDAO.updateEquilibreTotale(participant.getId(), equilibreGlobale);
             }
 
             participationDAO.close();

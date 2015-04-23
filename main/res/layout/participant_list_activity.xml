@@ -33,6 +33,8 @@
         android:layout_below="@+id/toolBar"
         />
 
+
+
     <View
         android:id="@+id/subTitleParticipantText"
         android:background="#FFFFFF"
@@ -40,6 +42,16 @@
         android:layout_height="48dp"
         android:layout_below="@+id/titleParticipantText"
         />
+
+    <View
+        android:id="@+id/add_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignBottom="@id/titleParticipantText"
+
+        android:layout_marginBottom="-25dp"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/flotting_btn_plus"/>
 
     <View
         android:id="@+id/lineTitle"

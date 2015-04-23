@@ -49,7 +49,7 @@ public class SendRapportAdapter extends ArrayAdapter<Participant> {
         View childView = arg1;
         if(childView == null || childView.getTag() == null){
 
-            childView = activity.getLayoutInflater().inflate(R.layout.participant_item, null);
+            childView = activity.getLayoutInflater().inflate(R.layout.send_resume_item, null);
 
             ViewHolder viewHolder = new ViewHolder();
 

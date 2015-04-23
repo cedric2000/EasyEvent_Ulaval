@@ -499,7 +499,7 @@
                 <LinearLayout
                     android:id="@+id/rap_card_text_layout"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
